@@ -1,0 +1,238 @@
+.timeline {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  position: relative;
+}
+
+.timeline-title {
+  text-align: center;
+  font-family: 'Crimson Text', serif;
+  font-size: 2.5rem;
+  color: #42481d;
+  margin-bottom: 10px;
+  font-weight: normal;
+}
+
+.timeline-subtitle {
+  text-align: center;
+  font-family: 'Allura', cursive;
+  font-size: 2.5rem;
+  color: #687037;
+  margin-bottom: 60px;
+  font-weight: normal;
+}
+
+.timeline-container {
+  position: relative;
+  padding: 19px 0;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.timeline-line {
+  position: absolute;
+  width: 2px;
+  background-color: #42481d !important;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+}
+
+.timeline-event {
+  width: 50%;
+  position: relative;
+  margin: 40px 0;
+}
+
+.timeline-event.left {
+  left: -0.1%;
+  padding-right: 15px;
+  text-align: center;
+}
+
+.timeline-event.right {
+  left: 65%;
+  padding-left: 25px;
+  text-align: center;
+}
+
+.event-content {
+  display: flex;
+  align-items: center;
+  gap: 0px;
+  position: relative;
+}
+
+.timeline-event.left .event-content {
+  justify-content: flex-end;
+  margin-right: -50px;
+  padding-right: 158px;
+}
+
+.timeline-event.right .event-content {
+  justify-content: flex-start;
+  margin-left: -20px;
+  padding-left: 16px;
+}
+
+.event-time {
+  font-family: 'Crimson Text', serif;
+  font-size: 1.1rem;
+  font-weight: normal;
+  color: #42481d;
+  min-width: 55px;
+  margin-right: 0px;
+}
+
+/* Estilos para PC */
+@media (min-width: 1024px) {
+  .timeline {
+    padding: 40px 20px;
+  }
+  
+  .timeline-title {
+    font-size: 2.8rem;
+  }
+  
+  .timeline-subtitle {
+    font-size: 2.8rem;
+  }
+  
+  .event-time {
+    font-size: 1.3rem;
+  }
+  .timeline-event.left::after {
+    opacity: 1;
+    background-color: #42481d;
+    margin-left: 192px;
+  }
+   .timeline-event.left::before {
+    opacity: 1;
+    background-color: #42481d;
+    margin-left: 182px;
+    margin-top: 4px;
+    width: 200px;
+  }
+    .timeline-event.right::after {
+    opacity: 1;
+    background-color: #42481d;
+    margin-left: -303px;
+  }
+   .timeline-event.right::before {
+    opacity: 1;
+    background-color: #42481d;
+    margin-left: -302px;
+    margin-top: 4px;
+    width: 200px;
+  }
+  .timeline-event.right .event-content {
+    margin-right: -10px;
+    padding-right: 158px;
+  }
+}
+
+.event-icon {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: -6px;
+}
+
+.timeline-event.left .event-icon {
+  right: -12px;
+}
+
+.timeline-event.right .event-icon {
+  left: -12px;
+}
+
+.icon-image {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.event-title {
+  font-family: 'Crimson Text', serif;
+  font-size: 0.8rem;
+  color: #42481d;
+}
+
+
+  
+/* Responsive */
+
+
+@media (max-width: 768px) {
+  .timeline {
+    padding: 0px;
+  }
+
+  .timeline-title {
+    font-size: 2rem;
+    margin-bottom: 5px;
+  }
+
+  .timeline-subtitle {
+    font-size: 2rem;
+    margin-bottom: 40px;
+  }
+
+  .timeline-line {
+    left: 50%;
+  }
+
+  .timeline-event {
+    width: 50%;
+    margin: 30px 0;
+  }
+
+  .timeline-event.left {
+    padding-right: 35px;
+  }
+
+  .timeline-event.right {
+    padding-left: 25px;
+  }
+
+  .timeline-event::before {
+    width: 14px;
+    height: 14px;
+    opacity: 0;
+  }
+   .timeline-event::after {
+    width: 14px;
+    height: 14px;
+    opacity: 0;
+  }
+
+  .event-time {
+    font-size: 1rem;
+  }
+
+  .event-icon {
+    font-size: 1.1rem;
+    min-width: 25px;
+  }
+
+  .event-title {
+    font-size: 1rem;
+    width: 100px;
+
+  }
+
+  .timeline-event.left .event-content {
+    justify-content: flex-end;
+  }
+
+  .timeline-event.right .event-content {
+    justify-content: flex-start;
+  }
+}

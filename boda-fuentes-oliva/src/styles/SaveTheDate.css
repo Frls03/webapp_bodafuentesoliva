@@ -1,0 +1,828 @@
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Allura&display=swap');
+
+.save-the-date {
+  min-height: 100vh;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background: none;
+  overflow-x: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+/* Sección Hero con imagen de fondo */
+.hero-section {
+  position: relative;
+  height: 85vh;
+  min-height: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  width: 90%;
+  max-width: 1200px;
+  opacity: 0;
+  background: transparent;
+  transform: translateY(30px);
+  transition: all 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, opacity;
+  margin: 0 auto;
+}
+
+@media (min-width: 1024px) {
+  .hero-section {
+    margin: 70px;
+    height: 90vh;
+    min-height: 700px;
+    padding-top: 80px; /* Espacio para el navigation */
+  }
+}
+
+.hero-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.hero-section.hidden {
+  opacity: 0;
+  transform: translateY(-50px);
+  pointer-events: none;
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hero-background {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.background-image {
+  position: absolute;
+  inset: 0;
+  background-image: url('/images/pantalla.jpeg');
+  /* Show the whole image by default so baked-in text doesn't get cropped */
+  background-size: contain;
+  /* Allow tuning vertical focal point with --hero-focus-y (percent) */
+  background-position: center var(--hero-focus-y, 40%);
+  background-repeat: no-repeat;
+  /* Keep image colors intact so baked-in text remains legible */
+  filter: none;
+  max-width: 100%;
+  max-height: 100%;
+  margin: auto;
+}
+
+/* Overlay para mejorar legibilidad del texto */
+.hero-background::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  /* Lower overlay by default to avoid reducing legibility of baked-in text */
+  background: transparent;
+  z-index: 2;
+}
+
+/* Helper classes to switch behavior quickly in markup */
+.hero-section.cover-image .background-image {
+  background-size: cover;
+  background-position: center center;
+}
+
+.hero-section.no-overlay .hero-background::after {
+  background: rgba(0,0,0,0);
+}
+
+/* Contenido del hero */
+.hero-content {
+  position: relative;
+  z-index: 3;
+  text-align: center;
+  color: white;
+  width: 100%;
+  max-width: 800px;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: visible; /* ensure arc letters can overflow inside hero */
+}
+
+/* Arc text containers (top / bottom) - ensure they are centered and arcs are visible */
+.curved-text-top,
+.curved-text-bottom {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  max-width: 900px;
+  pointer-events: none; /* let clicks pass through */
+  z-index: 10;
+  display: block;
+}
+
+/* specific vertical placement so arcs sit inside the photo */
+.curved-text-top { top: 33%; }
+.curved-text-bottom { top: 20%; }
+
+@media (min-width: 1024px) {
+  .curved-text-top { top: 38%; }
+  .curved-text-bottom { top: 25%; }
+}
+
+/* SVG text styling: white fill, use Crimson Text if available and scale up */
+.curved-text {
+  fill: #ffffff; /* keep letters white on hero image */
+  color: #ffffff; /* fallback */
+  font-family: 'Crimson Text', serif;
+  font-size: 1.25rem; /* base size, ArcText scales horizontally */
+  font-weight: 300;
+  letter-spacing: 0.12em;
+}
+
+/* Increase arc font size on larger screens */
+@media (min-width: 1024px) {
+  .curved-text { font-size: 2rem; }
+}
+
+/* CSS/JS arc letters: each .arc-letter is positioned on an arc using transform rotations */
+.css-arc { position: relative; height: auto; overflow: visible; }
+.arc-letter {
+  color: #ffffff;
+  font-family: 'Crimson Text', serif;
+  font-weight: 700;
+  font-size: 1.5rem;
+  pointer-events: none;
+  display: inline-block;
+  transform-origin: center center;
+  text-shadow: 0 6px 18px rgba(34,39,16,0.45);
+  z-index: 50;
+  position: absolute;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+@media (min-width: 1024px) {
+  .arc-letter { font-size: 3.5rem; }
+}
+
+/* Reduce spacing for bottom arc letters (FUENTES OLIVA) so they read closer but not cramped. Tweak value as needed. */
+.curved-text-bottom .arc-letter {
+  letter-spacing: 0.03em;
+}
+
+/* Texto curvado superior */
+.curved-text-top {
+  margin-bottom: 01px;
+}
+
+/* additional curved-text reset removed to allow SVG styling via .curved-text earlier */
+
+.curved-text::before,
+.curved-text::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 30px;
+  height: 1px;
+  background: #ffffff;
+}
+
+.curved-text::before {
+  left: 40px;
+}
+
+.curved-text::after {
+  right: 40px;
+}
+
+/* Display de fecha */
+.date-display {
+  margin: 60px 0;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.date-number,
+.date-month,
+.date-year {
+  font-size: 5.2rem; /* unified large size */
+  font-weight: 700;
+  line-height: 1;
+  margin: 6px 0;
+  letter-spacing: 8.5px;
+  text-align: center;
+  text-transform: none;
+}
+
+@media (min-width: 1024px) {
+  .date-number { font-size: 7rem; }
+  .date-month { font-size: 6rem; }
+  .date-year { font-size: 6rem; }
+}
+
+.date-month, .date-year { text-transform: uppercase; opacity: 0.98; }
+
+/* Texto curvado inferior */
+.curved-text-bottom {
+  margin-top: 40px;
+}
+
+/* Sección de mensaje */
+.message-section {
+  background: none;
+  padding: 60px 0;
+  min-height: 30vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, opacity;
+  margin: -100px;
+  box-sizing: border-box;
+}
+
+.message-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.message-section.hidden {
+  opacity: 0;
+  transform: translateY(-50px);
+  pointer-events: none;
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.story-message {
+  text-align: center;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.story-text {
+  font-family: 'Crimson Text', serif;
+  font-size: 5rem;
+  color: #42481d;
+  font-weight: 400;
+  line-height: 1.1;
+  margin: 0 0 6px 0;
+}
+
+.story-cursive {
+  font-style: italic;
+  font-weight: 400;
+  margin-top: 8px;
+  font-size: 3.6rem;
+}
+
+@media (min-width: 1024px) {
+  .story-text {
+    font-size: 6.5rem;
+  }
+  
+  .story-cursive {
+    font-size: 4.8rem;
+  }
+}
+
+.story-line {
+  width: 160px;
+  height: 1.5px;
+  background: #6b7037;
+  margin: 20px auto;
+}
+
+.action-buttons {
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+
+/* Botón personalizado */
+.btn {
+  padding: 15px 40px;
+  border: none;
+  border-radius: 30px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+  font-family: 'Georgia', serif;
+  letter-spacing: 1px;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #f3f4f2, #e9ebe3);
+  color: #2c3e50;
+  box-shadow: 0 4px 8px rgba(34,39,16,0.06);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #e9ebe3, #eef0e8);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(34,39,16,0.08);
+}
+
+/* Responsive Design */
+/* Desktop styles */
+@media (min-width: 1024px) {
+  .hero-section {
+    height: 90vh;
+    min-height: 700px;
+    padding-top: 80px;
+  }
+  
+  .hero-content {
+    max-width: 900px;
+  }
+  
+  .curved-text {
+    font-size: 2rem;
+  }
+  
+  .date-number {
+    font-size: 7rem;
+  }
+  
+  .date-month,
+  .date-year {
+    font-size: 6rem;
+  }
+  
+  .story-text {
+    font-size: 6.5rem;
+  }
+  
+  .story-cursive {
+    font-size: 4.8rem;
+  }
+  
+  .curved-text-top { 
+    top: 38%; 
+  }
+  
+  .curved-text-bottom { 
+    top: 25%; 
+  }
+  
+  .arc-letter { 
+    font-size: 3.5rem; 
+  }
+}
+
+/* Tablet styles */
+@media (max-width: 1023px) {
+  .hero-content {
+    max-width: 700px;
+  }
+  
+  .curved-text {
+    font-size: 1.3rem;
+  }
+  
+  .date-number {
+    font-size: 4.6rem;
+  }
+  
+  .date-month {
+    font-size: 3.2rem;
+  }
+  
+  .story-text {
+    font-size: 2.2rem;
+  }
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+  .hero-section {
+    width: 95%;
+  }
+
+  .hero-content {
+    padding: 0 15px;
+    max-width: 600px;
+  }
+  
+  .curved-text {
+    font-size: 1.2rem;
+    letter-spacing: 3px;
+  }
+  
+  .date-number {
+    font-size: 4rem;
+  }
+  
+  .date-month,
+  .date-year {
+    font-size: 2.6rem;
+  }
+  
+  .story-text {
+    font-size: 1.8rem;
+  }
+  
+  .message-section {
+    padding: 80px 0;
+  }
+}
+
+/* Small mobile styles */
+@media (max-width: 480px) {
+  .hero-content {
+    max-width: 500px;
+  }
+  
+  .curved-text {
+    font-size: 1rem;
+    letter-spacing: 2px;
+  }
+  
+  .curved-text::before,
+  .curved-text::after {
+    width: 25px;
+  }
+  
+  .curved-text::before {
+    left: -30px;
+  }
+  
+  .curved-text::after {
+    right: -30px;
+  }
+  
+  .date-number {
+    font-size: 3.6rem;
+  }
+  
+  .date-month,
+  .date-year {
+    font-size: 2.2rem;
+  }
+  
+  .story-text {
+    font-size: 1.7rem;
+  }
+  
+  .message-section {
+    padding: 60px 0;
+  }
+  
+  .btn {
+    padding: 12px 30px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 320px) {
+  .date-number {
+    font-size: 2rem;
+  }
+  
+  .story-text {
+    font-size: 1.1rem;
+  }
+}
+
+/* Módulo adicional con scroll animado */
+.additional-module {
+  background: linear-gradient(130deg, rgba(66, 72, 29, 0.05) 0%, rgba(104, 112, 55, 0.08) 100%) !important;
+  padding: 100px 0;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+  z-index: 1;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.additional-module.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.additional-module .module-content {
+  max-width: 800px;
+  width: 100%;
+  padding: 0 20px;
+  text-align: center;
+  background: transparent !important;
+}
+
+.additional-module .module-content *:not(.btn):not(.btn-primary) {
+  background: transparent !important;
+}
+
+/* Animaciones para elementos internos */
+.additional-module.visible .module-title {
+  animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.6s both;
+}
+
+.additional-module.visible .module-text {
+  animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.9s both;
+}
+
+.additional-module.visible .module-highlight {
+  animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) 1.2s both;
+}
+
+.additional-module.visible .countdown {
+  animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) 1.5s both;
+}
+
+.module-header {
+  margin-bottom: 50px;
+}
+
+.additional-module .module-content .module-header .module-title {
+  font-family: 'Crimson Text', serif !important;
+  font-size: 2.5rem !important;
+  color: #42481d !important;
+  font-weight: 400 !important;
+  letter-spacing: 2px !important;
+  margin: 0 !important;
+  text-align: center !important;
+  display: block;
+}
+
+.module-text {
+  margin: 60px 0;
+  text-align: center;
+  background: transparent !important;
+}
+
+.module-text p {
+  font-family: 'Crimson Text', serif;
+  font-size: 1.2rem;
+  line-height: 1.8;
+  color: #42481d;
+  margin: 0;
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+  text-shadow: 0 1px 1px rgba(255,255,255,0.2);
+  background: none !important;
+}
+
+.module-highlight {
+  margin-top: 40px;
+  padding: 0;
+  background: transparent; /* plain text, no box */
+  border: none;
+  box-shadow: none;
+  text-align: center;
+}
+
+.highlight-title {
+  font-family: 'Allura', serif;
+  font-size: 2.5rem;
+  color: #42481d;
+  font-weight: 400;
+  margin: 0 0 20px 0;
+  font-style: italic;
+  letter-spacing: 2px;
+}
+
+.highlight-date {
+  font-family: 'Crimson Text', serif;
+  font-size: 2rem;
+  color: #42481d;
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+
+/* Countdown visual improvements */
+.countdown {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.countdown-grid {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+
+.countdown-item {
+  padding: 10px 14px;
+  min-width: 72px;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(5px);
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(66, 72, 29, 0.08),
+              inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+.count-number {
+  font-family: 'Crimson Text', serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #42481d;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.2);
+}
+
+.count-label {
+  font-size: 0.85rem;
+  color: #687037;
+  margin-top: 6px;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.2);
+}
+
+.countdown-ended {
+  font-family: 'Georgia', serif;
+  font-size: 1.2rem;
+  color: #42481d;
+  font-weight: 600;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.2);
+}
+
+/* Animaciones */
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOutUp {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  50% {
+    opacity: 0.5;
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOutDown {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+}
+
+/* Asegurar que las animaciones sean suaves */
+.additional-module, .module-content {
+  backface-visibility: hidden;
+  perspective: 1000px;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Responsive para el módulo adicional */
+@media (max-width: 1024px) {
+  .module-content {
+    max-width: 90%;
+  }
+  
+  .module-title {
+    font-size: 2.5rem;
+  }
+  
+  .highlight-title {
+    font-size: 2.2rem;
+  }
+  
+  .highlight-date {
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .additional-module {
+    padding: 80px 0;
+  }
+  
+  .module-content {
+    max-width: 95%;
+    padding: 0 15px;
+  }
+  
+  .module-title {
+    font-size: 2.2rem;
+  }
+  
+  .module-text p {
+    font-size: 1.1rem;
+    text-align: center;
+  }
+  
+  .module-highlight {
+    padding: 40px 20px;
+    margin-top: 60px;
+  }
+  
+  .highlight-title {
+    font-size: 2rem;
+  }
+  
+  .highlight-date {
+    font-size: 1.6rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .additional-module {
+    padding: 60px 0;
+  }
+  
+  .module-title {
+    font-size: 1.8rem;
+  }
+  
+  .module-text p {
+    font-size: 1rem;
+  }
+  
+  .module-highlight {
+    padding: 30px 15px;
+    margin-top: 40px;
+  }
+  
+  .highlight-title {
+    font-size: 2.8rem;
+  }
+  
+  .highlight-date {
+    font-size: 1.9rem;
+  }
+}
+
+/* Force Crimson Text in the first module (hero + immediate message) */
+.hero-content,
+.hero-content .curved-text,
+.date-display,
+.date-number,
+.date-month,
+.date-year,
+.message-section,
+.story-message,
+.story-text {
+  font-family: 'Crimson Text', serif !important;
+}
+
+/* Allura decorative inline word style */
+.allura {
+  font-family: 'Allura', cursive;
+  font-style: italic;
+  font-weight: 400;
+  display: inline-block;
+  vertical-align: baseline;
+  margin: 0 0.12em;
+  letter-spacing: 0.02em;
+}

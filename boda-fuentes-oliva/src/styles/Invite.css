@@ -1,4 +1,4 @@
-/* Invite - Módulos individuales con animaciones de scroll */
+﻿/* Invite - Módulos individuales con animaciones de scroll */
 /* Media Queries */
 @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Allura&display=swap');
@@ -540,7 +540,7 @@
 }
 
 .nav-btn:hover {
-  background: #1f2937 !important;
+  background: #687037 !important;
   transform: translateY(-2px);
 }
 
@@ -681,21 +681,24 @@
 .action-btn {
   width: 100%;
   padding: 14px 18px;
-  border: 1px solid rgba(34,39,16,0.04);
+  border: 1px solid rgba(34,39,16,0.06);
   border-radius: 10px;
-  background: #ffffff;
-  color: #2c3e50;
+  background: #909b57;
+  color: #687037 !important;
   font-family: 'Crimson Text', serif;
   font-size: 1rem;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.18s ease;
+  transition: all 0.3s ease;
 }
 
+
+
 .action-btn:hover {
-  background: #fafafa;
+  background: #687037;
+  transform: translateY(-2px);
 }
 
 .btn-icon {
@@ -704,7 +707,7 @@
 }
 
 .btn-text {
-  color: #2c3e50;
+  color: #ffffff;
 }
 
 .closing-message {
@@ -858,5 +861,33 @@
   
   .back-button-container {
     margin: 30px auto 20px auto;
+  }
+}
+
+/* Módulo de Confirmación - Estilos específicos */
+.confirmation-module {
+  min-height: 70vh;
+  padding: 40px 20px;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.confirmation-module .module-content.compact {
+  padding: 20px;
+  background: #ffffff;
+  max-width: 600px;
+}
+
+/* Responsive para módulo de confirmación */
+@media (max-width: 768px) {
+  .confirmation-module {
+    min-height: 80vh;
+    padding: 30px 15px;
+  }
+
+  .confirmation-module .module-content.compact {
+    padding: 15px;
   }
 }

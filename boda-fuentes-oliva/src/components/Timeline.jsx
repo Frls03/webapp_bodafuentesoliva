@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "../styles/Timeline.css";
+import "../styles/ScrollAnimations.css";
 
 const events = [
   { time: "14:00", title: "Recepción", icon: "/icons/arco.png" },
@@ -18,6 +19,40 @@ const events = [
 });
 
 const Timeline = () => {
+  const [visibleItems, setVisibleItems] = useState(
+    new Array(events.length).fill(true) // Empezar todos como visibles
+  );
+  const observerRefs = useRef([]);
+
+  useEffect(() => {
+    const observers = [];
+
+    observerRefs.current.forEach((ref, index) => {
+      if (!ref) return;
+
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          setVisibleItems((prev) => {
+            const newVisible = [...prev];
+            newVisible[index] = entry.isIntersecting;
+            return newVisible;
+          });
+        },
+        {
+          threshold: 0.3,
+          rootMargin: '-50px',
+        }
+      );
+
+      observer.observe(ref);
+      observers.push(observer);
+    });
+
+    return () => {
+      observers.forEach((observer) => observer.disconnect());
+    };
+  }, []);
+
   return (
     <div className="timeline">
       <h2 className="timeline-title">Wedding Timeline</h2>
@@ -28,7 +63,11 @@ const Timeline = () => {
         {events.map((event, index) => (
           <div
             key={index}
-            className={`timeline-event ${index % 2 === 0 ? "left" : "right"}`}
+            ref={(el) => (observerRefs.current[index] = el)}
+            className={`timeline-event ${index % 2 === 0 ? "left" : "right"} timeline-item-animate ${
+              visibleItems[index] ? "visible" : "hidden"
+            }`}
+            data-index={index}
           >
             <div className="event-content">
               <div className="event-time">{event.time}</div>

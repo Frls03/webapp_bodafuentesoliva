@@ -1,0 +1,286 @@
+/* GuestNames Component Styles - Solo muestra nombres (sin formulario) */
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Allura&display=swap');
+
+.guest-names-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  background: #ffffff;
+  position: relative;
+  min-height: 50vh; /* En móvil/tablet, altura mínima moderada */
+}
+
+.guest-names-container::before {
+  display: none;
+}
+
+.guest-names-content {
+  max-width: 800px;
+  width: 100%;
+  padding: 50px 40px;
+  background: #ffffff;
+  border-radius: 0;
+  box-shadow: none;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  border: none;
+  animation: fadeInScale 0.6s ease-out;
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Header */
+.guest-names-header {
+  margin-bottom: 30px;
+}
+
+.guest-welcome {
+  font-family: 'Crimson Text', serif;
+  font-size: 2rem;
+  color: #687037;
+  font-weight: 400;
+  margin-bottom: 20px;
+}
+
+/* Display de nombres */
+.guest-names-display {
+  margin: 40px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.guest-name {
+  font-family: 'Allura', cursive;
+  font-size: 3.5rem;
+  color: #42481d;
+  font-weight: 400;
+  line-height: 1;
+  animation: slideInName 0.8s ease-out;
+}
+
+.guest-separator {
+  font-family: 'Crimson Text', serif;
+  font-size: 2rem;
+  color: #687037;
+  margin: 0 10px;
+  font-weight: 300;
+}
+
+@keyframes slideInName {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.guest-message {
+  margin: 30px 0;
+}
+
+.guest-message p {
+  font-family: 'Crimson Text', serif;
+  font-size: 1.2rem;
+  color: #42481d;
+  font-weight: 400;
+  line-height: 1.6;
+  font-style: italic;
+}
+
+/* Divisor decorativo */
+.decorative-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin: 40px 0 30px;
+}
+
+.divider-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, transparent, #687037, transparent);
+}
+
+.divider-icon {
+  font-size: 1.5rem;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+/* Botón de cambio */
+.guest-change-btn {
+  width: 100%;
+  max-width: 400px;
+  padding: 12px 24px;
+  font-family: 'Crimson Text', serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #687037;
+  background: transparent;
+  border: 2px solid #687037;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  outline: none;
+  margin: 0 auto;
+}
+
+.guest-change-btn:hover {
+  background: rgba(104, 112, 55, 0.05);
+  transform: translateY(-2px);
+}
+
+.guest-change-btn:active {
+  transform: translateY(0);
+}
+
+.guest-change-btn:focus {
+  outline: 3px solid rgba(104, 112, 55, 0.4);
+  outline-offset: 2px;
+}
+
+/* Responsive - Tablets */
+@media (max-width: 768px) {
+  .guest-names-container {
+    padding: 40px 15px;
+    min-height: 40vh;
+  }
+
+  .guest-names-content {
+    padding: 40px 30px;
+  }
+
+  .guest-welcome {
+    font-size: 1.8rem;
+  }
+
+  .guest-name {
+    font-size: 2.8rem;
+  }
+
+  .guest-separator {
+    font-size: 1.6rem;
+  }
+
+  .guest-message p {
+    font-size: 1.1rem;
+  }
+
+  .guest-change-btn {
+    font-size: 0.9rem;
+    padding: 11px 22px;
+  }
+}
+
+/* Responsive - Móviles */
+@media (max-width: 480px) {
+  .guest-names-container {
+    padding: 30px 10px;
+    min-height: 35vh;
+  }
+
+  .guest-names-content {
+    padding: 30px 20px;
+    border-radius: 15px;
+  }
+
+  .guest-welcome {
+    font-size: 1.6rem;
+  }
+
+  .guest-name {
+    font-size: 2.5rem;
+  }
+
+  .guest-separator {
+    font-size: 1.4rem;
+    margin: 0 5px;
+  }
+
+  .guest-message p {
+    font-size: 1rem;
+  }
+
+  .divider-icon {
+    font-size: 1.2rem;
+  }
+
+  .guest-change-btn {
+    font-size: 0.85rem;
+    padding: 10px 20px;
+  }
+}
+
+/* Desktop - Hacer el módulo MÁS LARGO para que se vea primero */
+@media (min-width: 1024px) {
+  .guest-names-container {
+    min-height: 100vh; /* Altura completa de viewport en PC */
+    padding: 80px 40px;
+  }
+
+  .guest-names-content {
+    max-width: 900px;
+    padding: 80px 60px;
+  }
+
+  .guest-welcome {
+    font-size: 2.5rem;
+    margin-bottom: 40px;
+  }
+
+  .guest-name {
+    font-size: 5rem; /* Nombres más grandes en PC */
+  }
+
+  .guest-separator {
+    font-size: 2.8rem;
+  }
+
+  .guest-message p {
+    font-size: 1.4rem;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .guest-message {
+    margin: 50px 0;
+  }
+
+  .decorative-divider {
+    margin: 60px 0 40px;
+  }
+
+  .guest-change-btn {
+    font-size: 1rem;
+    padding: 14px 28px;
+    max-width: 450px;
+  }
+}

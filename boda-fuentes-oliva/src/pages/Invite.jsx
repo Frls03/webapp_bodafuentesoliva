@@ -1,26 +1,182 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/Invite.css';
+import '../styles/ScrollAnimations.css';
 import Timeline from '../components/Timeline';
+import GuestNames from '../components/GuestNames';
+import PasswordGate from '../components/PasswordGate';
+import CloudinaryUpload from '../components/CloudinaryUpload';
+import AttendanceConfirmation from '../components/AttendanceConfirmation';
+import { useScrollAnimation } from '../hooks/useScrollAnimation';
 
 const Invite = () => {
   const navigate = useNavigate();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [guestData, setGuestData] = useState(null);
+
+  // Estados de visibilidad para cada módulo - Estilo SaveTheDate
+  const [guestNamesVisible, setGuestNamesVisible] = useState(true);
+  const [timelineVisible, setTimelineVisible] = useState(true);
+  const [dressCodeVisible, setDressCodeVisible] = useState(false);
+  const [detailsVisible, setDetailsVisible] = useState(false);
+  const [locationVisible, setLocationVisible] = useState(false);
+  const [confirmationVisible, setConfirmationVisible] = useState(false);
+  const [momentsVisible, setMomentsVisible] = useState(false);
+
+  // Hooks para animar cada outfit individualmente cuando el módulo Dress Code es visible
+  const outfit1Anim = useScrollAnimation({ threshold: 0.3 }, true);
+  const outfit2Anim = useScrollAnimation({ threshold: 0.3 }, true);
+  const outfit3Anim = useScrollAnimation({ threshold: 0.3 }, true);
+  const outfit4Anim = useScrollAnimation({ threshold: 0.3 }, true);
+  const outfit5Anim = useScrollAnimation({ threshold: 0.3 }, true);
+  const outfit6Anim = useScrollAnimation({ threshold: 0.3 }, true);
+
+  // Control de visibilidad de módulos basado en scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY;
+      const windowHeight = window.innerHeight;
+
+      // Obtener las posiciones de cada módulo
+      const guestNamesSection = document.querySelector('.guest-names-module');
+      const timelineSection = document.querySelector('.timeline-module');
+      const dressCodeSection = document.querySelector('.dress-code-module');
+      const detailsSection = document.querySelector('.details-module');
+      const locationSection = document.querySelector('.location-module');
+      const confirmationSection = document.querySelector('.confirmation-module');
+      const momentsSection = document.querySelector('.moments-module');
+
+      if (!guestNamesSection || !timelineSection || !dressCodeSection || !detailsSection || !locationSection || !confirmationSection || !momentsSection) return;
+
+      // Calcular las posiciones de inicio y fin de cada módulo
+      const getModuleZone = (element) => {
+        const rect = element.getBoundingClientRect();
+        const elementTop = rect.top + scrollPosition;
+        const elementBottom = elementTop + rect.height;
+        return {
+          start: elementTop - windowHeight * 0.8, // Empieza a aparecer cuando falta 80% de pantalla
+          end: elementBottom - windowHeight * 0.2, // Empieza a desaparecer cuando pasa 20% de pantalla
+          center: elementTop + (rect.height / 2) - scrollPosition
+        };
+      };
+
+      const guestNamesZone = getModuleZone(guestNamesSection);
+      const timelineZone = getModuleZone(timelineSection);
+      const dressCodeZone = getModuleZone(dressCodeSection);
+      const detailsZone = getModuleZone(detailsSection);
+      const locationZone = getModuleZone(locationSection);
+      const confirmationZone = getModuleZone(confirmationSection);
+      const momentsZone = getModuleZone(momentsSection);
+
+      // Determinar visibilidad basado en las zonas
+      // Guest Names: visible al inicio hasta que timeline aparece
+      setGuestNamesVisible(scrollPosition < timelineZone.start);
+
+      // Timeline: visible en su zona
+      setTimelineVisible(
+        scrollPosition >= timelineZone.start - windowHeight * 0.3 && 
+        scrollPosition < timelineZone.end
+      );
+
+      // Dress Code: visible en su zona
+      setDressCodeVisible(
+        scrollPosition >= dressCodeZone.start && 
+        scrollPosition < dressCodeZone.end
+      );
+
+      // Details: visible en su zona
+      setDetailsVisible(
+        scrollPosition >= detailsZone.start && 
+        scrollPosition < detailsZone.end
+      );
+
+      // Location: visible en su zona
+      setLocationVisible(
+        scrollPosition >= locationZone.start && 
+        scrollPosition < locationZone.end
+      );
+
+      // Confirmation: visible en su zona
+      setConfirmationVisible(
+        scrollPosition >= confirmationZone.start && 
+        scrollPosition < confirmationZone.end
+      );
+
+      // Moments: visible desde su inicio hasta el final
+      setMomentsVisible(scrollPosition >= momentsZone.start);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Ejecutar al montar
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  // Verificar si ya hay una sesión guardada al cargar
+  useEffect(() => {
+    const savedGuest = sessionStorage.getItem('guestData');
+    if (savedGuest) {
+      try {
+        const parsedGuest = JSON.parse(savedGuest);
+        setGuestData(parsedGuest);
+        setIsAuthenticated(true);
+      } catch (e) {
+        sessionStorage.removeItem('guestData');
+      }
+    }
+  }, []);
+
+  const handleAuthenticated = (guest) => {
+    setGuestData(guest);
+    setIsAuthenticated(true);
+  };
+
+  const handleChangeGuest = () => {
+    setGuestData(null);
+    setIsAuthenticated(false);
+    sessionStorage.removeItem('guestData');
+  };
 
   const handleBackToSaveTheDate = () => {
     navigate('/home');
   };
 
+  // Control de visibilidad del módulo de confirmación
+  // Cambia esto a false para ocultar el módulo completamente
+  const showConfirmationModule = true;
+
+  // Si no está autenticado, mostrar solo el gate de contraseña
+  if (!isAuthenticated) {
+    return <PasswordGate onAuthenticated={handleAuthenticated} />;
+  }
+
+  // Una vez autenticado, mostrar toda la invitación
   return (
     <div className="invite">
-        {/* Módulo 1: Wedding Timeline */}
-      <div className="module timeline-module">
+      {/* Módulo 0: Nombres de Invitados */}
+      <div 
+        className={`module guest-names-module module-animate ${guestNamesVisible ? 'visible' : 'hidden'}`}
+      >
+        <div className="module-content">
+          <GuestNames guestData={guestData} onChangeGuest={handleChangeGuest} />
+        </div>
+      </div>
+
+      {/* Módulo 1: Wedding Timeline */}
+      <div 
+        className={`module timeline-module module-animate ${timelineVisible ? 'visible' : 'hidden'}`}
+      >
         <div className="module-content">
           <Timeline />
         </div>
       </div>
 
       {/* Módulo 2: Dress Code */}
-      <div className="module dress-code-module">
+      <div 
+        className={`module dress-code-module module-animate ${dressCodeVisible ? 'visible' : 'hidden'}`}
+      >
         <div className="module-content">
           <div className="module-header">
             <h1 className="module-title">DRESS CODE</h1>
@@ -42,22 +198,40 @@ const Invite = () => {
           </div>
           
           <div className="outfit-grid">
-            <div className="outfit-item">
+            <div 
+              ref={outfit1Anim.ref}
+              className={`outfit-item outfit-image-animate ${dressCodeVisible && outfit1Anim.isVisible ? 'visible' : 'hidden'}`}
+            >
               <div className="outfit-placeholder">Outfit mujer 1</div>
             </div>
-            <div className="outfit-item">
+            <div 
+              ref={outfit2Anim.ref}
+              className={`outfit-item outfit-image-animate ${dressCodeVisible && outfit2Anim.isVisible ? 'visible' : 'hidden'}`}
+            >
               <div className="outfit-placeholder">Outfit mujer 2</div>
             </div>
-            <div className="outfit-item">
+            <div 
+              ref={outfit3Anim.ref}
+              className={`outfit-item outfit-image-animate ${dressCodeVisible && outfit3Anim.isVisible ? 'visible' : 'hidden'}`}
+            >
               <div className="outfit-placeholder">Outfit mujer 3</div>
             </div>
-            <div className="outfit-item">
+            <div 
+              ref={outfit4Anim.ref}
+              className={`outfit-item outfit-image-animate ${dressCodeVisible && outfit4Anim.isVisible ? 'visible' : 'hidden'}`}
+            >
               <div className="outfit-placeholder">Outfit hombre 1</div>
             </div>
-            <div className="outfit-item">
+            <div 
+              ref={outfit5Anim.ref}
+              className={`outfit-item outfit-image-animate ${dressCodeVisible && outfit5Anim.isVisible ? 'visible' : 'hidden'}`}
+            >
               <div className="outfit-placeholder">Outfit hombre 2</div>
             </div>
-            <div className="outfit-item">
+            <div 
+              ref={outfit6Anim.ref}
+              className={`outfit-item outfit-image-animate ${dressCodeVisible && outfit6Anim.isVisible ? 'visible' : 'hidden'}`}
+            >
               <div className="outfit-placeholder">Outfit hombre 3</div>
             </div>
           </div>
@@ -65,7 +239,9 @@ const Invite = () => {
       </div>
 
       {/* Módulo 3: Details */}
-      <div className="module details-module">
+      <div 
+        className={`module details-module module-animate ${detailsVisible ? 'visible' : 'hidden'}`}
+      >
         <div className="module-content">
           <div className="module-header">
             <h1 className="module-title">DETAILS</h1>
@@ -89,7 +265,9 @@ const Invite = () => {
       </div>
 
       {/* Módulo 4: Location */}
-      <div className="module location-module">
+      <div 
+        className={`module location-module module-animate ${locationVisible ? 'visible' : 'hidden'}`}
+      >
         <div className="module-content">
           <div className="module-header">
             <h1 className="module-title">Un día, un lugar, un recuerdo eterno</h1>
@@ -142,8 +320,21 @@ const Invite = () => {
         </div>
       </div>
 
-      {/* Módulo 5: Shared Moments */}
-      <div className="module moments-module">
+      {/* Módulo 5: Confirma tu Asistencia */}
+      {showConfirmationModule && (
+        <div 
+          className={`module confirmation-module module-animate ${confirmationVisible ? 'visible' : 'hidden'}`}
+        >
+          <div className="module-content compact">
+            <AttendanceConfirmation guestData={guestData} />
+          </div>
+        </div>
+      )}
+
+      {/* Módulo 6: Shared Moments */}
+      <div 
+        className={`module moments-module module-animate ${momentsVisible ? 'visible' : 'hidden'}`}
+      >
         <div className="module-content">
           <div className="module-header">
             <h1 className="module-title">Momentos compartidos</h1>
@@ -174,11 +365,10 @@ const Invite = () => {
             ></textarea>
           </div>
           
+          {/* Componente de upload de Cloudinary */}
+          <CloudinaryUpload />
+          
           <div className="action-buttons">
-            <button className="action-btn upload-btn">
-              <span className="btn-icon">📷</span>
-              <span className="btn-text">Sube tu recuerdo</span>
-            </button>
             <button className="action-btn message-btn">
               <span className="btn-icon">📝</span>
               <span className="btn-text">Deja tu mensaje</span>

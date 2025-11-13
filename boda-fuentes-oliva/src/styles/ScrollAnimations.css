@@ -1,0 +1,170 @@
+/* Animaciones de Scroll */
+
+/* Fade In desde abajo */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Fade Out hacia abajo */
+@keyframes fadeOutDown {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+}
+
+/* Fade In desde la izquierda */
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Fade In desde la derecha */
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Scale Fade In */
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Scale Fade Out */
+@keyframes scaleOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+}
+
+/* Clases para elementos animados */
+.animate-on-scroll {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.animate-on-scroll.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.animate-on-scroll.hidden {
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+/* Animación para elementos del timeline */
+.timeline-item-animate {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.timeline-item-animate.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.timeline-item-animate.hidden {
+  opacity: 0;
+  transform: translateX(-40px);
+}
+
+/* Animación para imágenes de outfit - Estilo SaveTheDate */
+.outfit-image-animate {
+  opacity: 0;
+  transform: scale(0.92) translateY(20px);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, opacity;
+}
+
+.outfit-image-animate.visible {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+.outfit-image-animate.hidden {
+  opacity: 0;
+  transform: scale(0.92) translateY(20px);
+}
+
+/* Delays escalonados para elementos múltiples */
+.stagger-delay-1 { transition-delay: 0.1s; }
+.stagger-delay-2 { transition-delay: 0.2s; }
+.stagger-delay-3 { transition-delay: 0.3s; }
+.stagger-delay-4 { transition-delay: 0.4s; }
+.stagger-delay-5 { transition-delay: 0.5s; }
+.stagger-delay-6 { transition-delay: 0.6s; }
+.stagger-delay-7 { transition-delay: 0.7s; }
+.stagger-delay-8 { transition-delay: 0.8s; }
+.stagger-delay-9 { transition-delay: 0.9s; }
+
+/* Animación suave para módulos completos - Estilo SaveTheDate */
+.module-animate {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, opacity;
+  pointer-events: none;
+}
+
+.module-animate.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.module-animate.hidden {
+  opacity: 0;
+  transform: translateY(30px);
+  pointer-events: none;
+}
+
+/* Reducir motion para usuarios con preferencias de accesibilidad */
+@media (prefers-reduced-motion: reduce) {
+  .animate-on-scroll,
+  .timeline-item-animate,
+  .outfit-image-animate,
+  .module-animate {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

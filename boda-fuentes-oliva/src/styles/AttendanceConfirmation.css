@@ -1,0 +1,241 @@
+/* Confirmación de Asistencia */
+
+.attendance-confirmation {
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.attendance-title {
+  font-family: 'Crimson Text', serif;
+  font-size: 1.6rem;
+  color: #42481d;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.attendance-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.attendance-question {
+  text-align: center;
+}
+
+.attendance-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.attendance-btn {
+  padding: 12px 24px;
+  font-family: 'Crimson Text', serif;
+  font-size: 1rem;
+  border: 2px solid #687037;
+  background: white;
+  color: #42481d;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 600;
+}
+
+.attendance-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(104, 112, 55, 0.2);
+}
+
+.attendance-btn.active {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(104, 112, 55, 0.3);
+}
+
+.attendance-btn.active.yes {
+  background: #687037;
+  color: white;
+  border-color: #687037;
+}
+
+.attendance-btn.active.no {
+  background: #d32f2f;
+  color: white;
+  border-color: #d32f2f;
+}
+
+.attendee-count {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.attendee-count label {
+  font-family: 'Crimson Text', serif;
+  font-size: 1.1rem;
+  color: #42481d;
+  font-weight: 600;
+}
+
+.count-select {
+  padding: 12px;
+  font-family: 'Crimson Text', serif;
+  font-size: 1rem;
+  border: 2px solid #687037;
+  border-radius: 8px;
+  background: white;
+  color: #42481d;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.count-select:focus {
+  outline: none;
+  border-color: #42481d;
+}
+
+.plus-one-note {
+  font-family: 'Crimson Text', serif;
+  font-size: 0.95rem;
+  color: #687037;
+  background: #f0f4e8;
+  padding: 8px 12px;
+  border-radius: 6px;
+  margin: 0;
+  font-style: italic;
+}
+
+.attendance-notes {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.attendance-notes label {
+  font-family: 'Crimson Text', serif;
+  font-size: 1rem;
+  color: #42481d;
+  font-weight: 600;
+}
+
+.notes-textarea {
+  padding: 10px;
+  font-family: 'Crimson Text', serif;
+  font-size: 0.95rem;
+  border: 2px solid #687037;
+  border-radius: 8px;
+  resize: vertical;
+  transition: border-color 0.3s ease;
+  min-height: 60px;
+  background: #fafaf8;
+}
+
+.notes-textarea:focus {
+  outline: none;
+  border-color: #42481d;
+}
+
+.notes-textarea::placeholder {
+  color: #999;
+  font-style: italic;
+}
+
+.attendance-message {
+  padding: 12px;
+  border-radius: 8px;
+  text-align: center;
+  font-family: 'Crimson Text', serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  animation: fadeIn 0.3s ease;
+}
+
+.attendance-message.success {
+  background: #e8f5e9;
+  color: #2e7d32;
+  border: 1px solid #4caf50;
+}
+
+.attendance-message.error {
+  background: #ffebee;
+  color: #c62828;
+  border: 1px solid #f44336;
+}
+
+.submit-attendance-btn {
+  padding: 12px 24px;
+  font-family: 'Crimson Text', serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  background: #687037;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 5px;
+}
+
+.submit-attendance-btn:hover:not(:disabled) {
+  background: #42481d;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(66, 72, 29, 0.3);
+}
+
+.submit-attendance-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.already-confirmed {
+  text-align: center;
+  font-family: 'Crimson Text', serif;
+  font-size: 0.9rem;
+  color: #687037;
+  font-style: italic;
+  margin-top: -10px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .attendance-confirmation {
+    padding: 20px 15px;
+  }
+
+  .attendance-title {
+    font-size: 1.4rem;
+    margin-bottom: 15px;
+  }
+
+  .attendance-buttons {
+    flex-direction: column;
+  }
+
+  .attendance-btn {
+    width: 100%;
+    padding: 10px 20px;
+    font-size: 0.95rem;
+  }
+
+  .submit-attendance-btn {
+    font-size: 1rem;
+  }
+}

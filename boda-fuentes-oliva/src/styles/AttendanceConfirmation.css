@@ -139,12 +139,13 @@
   padding: 10px;
   font-family: 'Crimson Text', serif;
   font-size: 0.95rem;
+  color: black;
   border: 2px solid #687037;
   border-radius: 8px;
   resize: vertical;
   transition: border-color 0.3s ease;
   min-height: 60px;
-  background: #fafaf8;
+  background: #ffffff;
 }
 
 .notes-textarea:focus {
@@ -153,7 +154,7 @@
 }
 
 .notes-textarea::placeholder {
-  color: #999;
+  color: #000000;
   font-style: italic;
 }
 

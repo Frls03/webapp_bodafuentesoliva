@@ -89,8 +89,8 @@ const AdminPanel = () => {
   }
 
   const confirmedGuests = stats.guests.filter(g => g.attendance_confirmed === true);
-  const pendingGuests = stats.guests.filter(g => !g.attendance_confirmed);
-  const declined = stats.guests.filter(g => g.attendance_confirmed === false);
+  const declinedGuests = stats.guests.filter(g => g.attendance_confirmed === false);
+  const pendingGuests = stats.guests.filter(g => g.attendance_confirmed === null);
 
   return (
     <div className="admin-panel">
@@ -138,11 +138,11 @@ const AdminPanel = () => {
           ))}
         </div>
 
-        {declined.length > 0 && (
+        {declinedGuests.length > 0 && (
           <>
-            <h2>❌ No Asistirán ({declined.length})</h2>
+            <h2>❌ No Asistirán ({declinedGuests.length})</h2>
             <div className="guests-list">
-              {declined.map((guest) => (
+              {declinedGuests.map((guest) => (
                 <div key={guest.id} className="guest-card declined">
                   <div className="guest-names">{guest.names.join(', ')}</div>
                   {guest.attendance_notes && (

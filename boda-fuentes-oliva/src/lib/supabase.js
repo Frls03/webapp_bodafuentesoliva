@@ -113,13 +113,16 @@ export const getAttendanceStats = async () => {
       return { total: 0, confirmed: 0, pending: 0, guests: [] };
     }
 
-    const confirmed = data.filter(g => g.attendance_confirmed).length;
+    const confirmed = data.filter(g => g.attendance_confirmed === true).length;
+    const declined = data.filter(g => g.attendance_confirmed === false).length;
+    const pending = data.filter(g => g.attendance_confirmed === null).length;
     const totalAttendees = data.reduce((sum, g) => sum + (g.attendance_count || 0), 0);
 
     return {
       total: data.length,
       confirmed,
-      pending: data.length - confirmed,
+      declined,
+      pending,
       totalAttendees,
       guests: data
     };

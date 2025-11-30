@@ -6,6 +6,7 @@ const AdminPanel = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [stats, setStats] = useState(null);
@@ -69,13 +70,22 @@ const AdminPanel = () => {
               onChange={(e) => setUsername(e.target.value)}
               required
             />
-            <input
-              type="password"
-              placeholder="Contraseña"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
+            <div className="password-input-container">
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="Contraseña"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+              <button
+                type="button"
+                className="toggle-password-btn"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? '👁️' : '👁️‍🗨️'}
+              </button>
+            </div>
             
             {error && <div className="admin-error">{error}</div>}
             
@@ -83,6 +93,10 @@ const AdminPanel = () => {
               {loading ? 'Verificando...' : 'Ingresar'}
             </button>
           </form>
+        </div>
+        
+        <div className="login-footer">
+          <p>© {new Date().getFullYear()} LFDevStudio. Todos los derechos reservados.</p>
         </div>
       </div>
     );

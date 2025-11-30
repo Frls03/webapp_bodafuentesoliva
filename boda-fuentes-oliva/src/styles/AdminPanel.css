@@ -3,10 +3,24 @@
 .admin-login {
   min-height: 100vh;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   background: linear-gradient(135deg, #303445 0%, #daffb9 100%);
   padding: 20px;
+}
+
+.login-footer {
+  margin-top: 20px;
+  text-align: center;
+  color: white;
+  font-family: 'Crimson Text', serif;
+  font-size: 0.9rem;
+}
+
+.login-footer p {
+  margin: 0;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .admin-login-card {
@@ -46,6 +60,33 @@
   border: 2px solid #687037;
   background: #ffffff;
   border-radius: 8px;
+}
+
+.password-input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-input-container input {
+  flex: 1;
+  padding-right: 50px;
+}
+
+.toggle-password-btn {
+  position: absolute;
+  right: 8px;
+  background: transparent !important;
+  border: none !important;
+  cursor: pointer;
+  padding: 8px !important;
+  font-size: 1.2rem;
+  transition: transform 0.2s;
+}
+
+.toggle-password-btn:hover {
+  transform: scale(1.1);
+  background: transparent !important;
 }
 
 .admin-login-card button {

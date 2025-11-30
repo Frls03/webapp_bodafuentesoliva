@@ -132,9 +132,7 @@ export const getAttendanceStats = async () => {
   }
 };
 
-// ============================================
-// FUNCIONES PARA SAVE THE DATE RSVP
-// ============================================
+
 
 // Función para enviar confirmación del Save The Date (sin autenticación)
 export const submitSaveTheDateRSVP = async (fullName, willAttend, notes = '') => {

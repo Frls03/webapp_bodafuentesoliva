@@ -9,7 +9,7 @@ const SaveTheDate = () => {
   const [heroVisible, setHeroVisible] = useState(true);
   const [showInviteButton, setShowInviteButton] = useState(() => {
     // Puedes cambiar esto a false para ocultar los botones
-    return true;
+    return false;
   });
 
   const handleViewInvite = () => {

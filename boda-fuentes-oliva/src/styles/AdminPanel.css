@@ -122,6 +122,46 @@
   background: #b71c1c;
 }
 
+/* Pestañas de navegación */
+.admin-tabs {
+  display: flex;
+  gap: 10px;
+  background: white;
+  padding: 10px;
+  border-radius: 12px;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 12px 20px;
+  font-family: 'Crimson Text', serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  background: transparent;
+  color: #666;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.tab-btn:hover {
+  background: rgba(111, 119, 60, 0.05);
+  color: #42481d;
+}
+
+.tab-btn.active {
+  background: #6f773c;
+  color: white;
+  border-color: #6f773c;
+}
+
+.logout-btn:hover {
+  background: #b71c1c;
+}
+
 .admin-stats {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -215,6 +255,13 @@
   margin-bottom: 10px;
 }
 
+.guest-date {
+  font-family: 'Crimson Text', serif;
+  font-size: 0.9rem;
+  color: #999;
+  margin-top: 8px;
+}
+
 .guest-info {
   display: flex;
   gap: 20px;
@@ -256,6 +303,20 @@
 
 .refresh-btn:hover {
   background: #42481d;
+}
+
+.page-footer {
+  text-align: center;
+  padding: 20px;
+  margin-top: 40px;
+  font-family: 'Crimson Text', serif;
+  color: #999;
+  font-size: 0.9rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.page-footer p {
+  margin: 0;
 }
 
 @media (max-width: 768px) {

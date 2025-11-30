@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { adminLogin, getAttendanceStats } from '../lib/supabase';
+import { adminLogin, getAttendanceStats, getSaveTheDateStats } from '../lib/supabase';
 import '../styles/AdminPanel.css';
 
 const AdminPanel = () => {
@@ -9,6 +9,8 @@ const AdminPanel = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [stats, setStats] = useState(null);
+  const [saveTheDateStats, setSaveTheDateStats] = useState(null);
+  const [activeTab, setActiveTab] = useState('invitation'); // 'invitation' o 'savethedate'
 
   useEffect(() => {
     // Verificar si ya está autenticado
@@ -22,7 +24,9 @@ const AdminPanel = () => {
   const loadStats = async () => {
     setLoading(true);
     const data = await getAttendanceStats();
+    const stdData = await getSaveTheDateStats();
     setStats(data);
+    setSaveTheDateStats(stdData);
     setLoading(false);
   };
 
@@ -84,13 +88,16 @@ const AdminPanel = () => {
     );
   }
 
-  if (!stats) {
+  if (!stats || !saveTheDateStats) {
     return <div className="admin-loading">Cargando estadísticas...</div>;
   }
 
   const confirmedGuests = stats.guests.filter(g => g.attendance_confirmed === true);
   const declinedGuests = stats.guests.filter(g => g.attendance_confirmed === false);
   const pendingGuests = stats.guests.filter(g => g.attendance_confirmed === null);
+
+  const confirmedSTD = saveTheDateStats.responses.filter(r => r.will_attend === true);
+  const declinedSTD = saveTheDateStats.responses.filter(r => r.will_attend === false);
 
   return (
     <div className="admin-panel">
@@ -99,21 +106,40 @@ const AdminPanel = () => {
         <button onClick={handleLogout} className="logout-btn">Cerrar Sesión</button>
       </div>
 
-      <div className="admin-stats">
-        <div className="stat-card">
-          <h3>Total Invitados</h3>
-          <div className="stat-number">{stats.total}</div>
-        </div>
-        <div className="stat-card success">
-          <h3>Confirmados</h3>
-          <div className="stat-number">{stats.confirmed}</div>
-        </div>
-        <div className="stat-card warning">
-          <h3>Pendientes</h3>
-          <div className="stat-number">{stats.pending}</div>
-        </div>
-        <div className="stat-card info">
-          <h3>Total Asistentes</h3>
+      {/* Pestañas de navegación */}
+      <div className="admin-tabs">
+        <button 
+          className={`tab-btn ${activeTab === 'invitation' ? 'active' : ''}`}
+          onClick={() => setActiveTab('invitation')}
+        >
+          📨 Invitación
+        </button>
+        <button 
+          className={`tab-btn ${activeTab === 'savethedate' ? 'active' : ''}`}
+          onClick={() => setActiveTab('savethedate')}
+        >
+          📅 Save The Date
+        </button>
+      </div>
+
+      {/* Contenido de Invitación */}
+      {activeTab === 'invitation' && (
+        <>
+          <div className="admin-stats">
+            <div className="stat-card">
+              <h3>Total Invitados</h3>
+              <div className="stat-number">{stats.total}</div>
+            </div>
+            <div className="stat-card success">
+              <h3>Confirmados</h3>
+              <div className="stat-number">{stats.confirmed}</div>
+            </div>
+            <div className="stat-card warning">
+              <h3>Pendientes</h3>
+              <div className="stat-number">{stats.pending}</div>
+            </div>
+            <div className="stat-card info">
+              <h3>Total Asistentes</h3>
           <div className="stat-number">{stats.totalAttendees}</div>
         </div>
       </div>
@@ -168,6 +194,78 @@ const AdminPanel = () => {
       <button onClick={loadStats} className="refresh-btn">
         🔄 Actualizar Datos
       </button>
+        </>
+      )}
+
+      {/* Contenido de Save The Date */}
+      {activeTab === 'savethedate' && (
+        <>
+          <div className="admin-stats">
+            <div className="stat-card">
+              <h3>Total Respuestas</h3>
+              <div className="stat-number">{saveTheDateStats.total}</div>
+            </div>
+            <div className="stat-card success">
+              <h3>Asistirán</h3>
+              <div className="stat-number">{saveTheDateStats.confirmed}</div>
+            </div>
+            <div className="stat-card danger">
+              <h3>No Asistirán</h3>
+              <div className="stat-number">{saveTheDateStats.declined}</div>
+            </div>
+          </div>
+
+          <div className="guests-section">
+            <h2>✅ Asistirán ({confirmedSTD.length})</h2>
+            <div className="guests-list">
+              {confirmedSTD.map((response) => (
+                <div key={response.id} className="guest-card confirmed">
+                  <div className="guest-names">{response.full_name}</div>
+                  <div className="guest-date">
+                    {new Date(response.created_at).toLocaleDateString('es-ES', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                      hour: '2-digit',
+                      minute: '2-digit'
+                    })}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {declinedSTD.length > 0 && (
+              <>
+                <h2>❌ No Asistirán ({declinedSTD.length})</h2>
+                <div className="guests-list">
+                  {declinedSTD.map((response) => (
+                    <div key={response.id} className="guest-card declined">
+                      <div className="guest-names">{response.full_name}</div>
+                      <div className="guest-date">
+                        {new Date(response.created_at).toLocaleDateString('es-ES', {
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric',
+                          hour: '2-digit',
+                          minute: '2-digit'
+                        })}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
+
+          <button onClick={loadStats} className="refresh-btn">
+            🔄 Actualizar Datos
+          </button>
+        </>
+      )}
+      
+      <footer className="page-footer">
+        <p>© {new Date().getFullYear()} LFDevStudio. Todos los derechos reservados.</p>
+      </footer>
     </div>
   );
 };

@@ -387,6 +387,10 @@ const Invite = () => {
           Volver al Save The Date
         </button>
       </div>
+      
+      <footer className="page-footer">
+        <p>© {new Date().getFullYear()} LFDevStudio. Todos los derechos reservados.</p>
+      </footer>
       </div>
   );
 };

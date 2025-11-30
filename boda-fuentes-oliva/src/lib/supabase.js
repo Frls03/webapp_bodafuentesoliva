@@ -132,3 +132,61 @@ export const getAttendanceStats = async () => {
   }
 };
 
+// ============================================
+// FUNCIONES PARA SAVE THE DATE RSVP
+// ============================================
+
+// Función para enviar confirmación del Save The Date (sin autenticación)
+export const submitSaveTheDateRSVP = async (fullName, willAttend, notes = '') => {
+  try {
+    const { data, error } = await supabase
+      .from('save_the_date_rsvp')
+      .insert([
+        {
+          full_name: fullName.trim(),
+          will_attend: willAttend,
+          notes: notes.trim()
+        }
+      ])
+      .select()
+      .single();
+
+    if (error) {
+      console.error('Error submitting Save The Date RSVP:', error);
+      return { success: false, error };
+    }
+
+    return { success: true, data };
+  } catch (err) {
+    console.error('Unexpected error:', err);
+    return { success: false, error: err };
+  }
+};
+
+// Función para obtener estadísticas del Save The Date (para admins)
+export const getSaveTheDateStats = async () => {
+  try {
+    const { data, error } = await supabase
+      .from('save_the_date_rsvp')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      console.error('Error fetching Save The Date stats:', error);
+      return { total: 0, confirmed: 0, declined: 0, responses: [] };
+    }
+
+    const confirmed = data.filter(r => r.will_attend === true).length;
+    const declined = data.filter(r => r.will_attend === false).length;
+
+    return {
+      total: data.length,
+      confirmed,
+      declined,
+      responses: data
+    };
+  } catch (err) {
+    console.error('Unexpected error:', err);
+    return { total: 0, confirmed: 0, declined: 0, responses: [] };
+  }
+};

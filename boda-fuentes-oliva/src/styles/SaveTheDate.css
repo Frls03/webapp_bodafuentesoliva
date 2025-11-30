@@ -393,6 +393,20 @@
   }
 }
 
+.page-footer {
+  text-align: center;
+  padding: 20px;
+  margin-top: 40px;
+  font-family: 'Crimson Text', serif;
+  color: #999;
+  font-size: 0.9rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.page-footer p {
+  margin: 0;
+}
+
 /* Tablet styles */
 @media (max-width: 1023px) {
   .hero-content {

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import SaveTheDateRSVP from '../components/SaveTheDateRSVP';
 import '../styles/SaveTheDate.css';
 
 const SaveTheDate = () => {
@@ -159,6 +160,9 @@ const SaveTheDate = () => {
             )}
           </div>
 
+          {/* Módulo de confirmación para Save The Date */}
+          <SaveTheDateRSVP />
+
           {/* Centro: botón Ver Invitación dentro del módulo adicional */}
           {showInviteButton && (
             <div className="module-cta" style={{ marginTop: '30px', textAlign: 'center' }}>
@@ -170,6 +174,10 @@ const SaveTheDate = () => {
 
         </div>
       </div>
+      
+      <footer className="page-footer">
+        <p>© {new Date().getFullYear()} LFDevStudio. Todos los derechos reservados.</p>
+      </footer>
     </div>
   );
 };

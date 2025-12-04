@@ -61,8 +61,7 @@ export default async function handler(req, res) {
       success: true,
       admin: {
         id: data.id,
-        username: data.username,
-        wedding_name: data.wedding_name
+        username: data.username
       }
     });
 

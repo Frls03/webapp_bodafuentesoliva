@@ -8,7 +8,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  // CORS headers (para desarrollo local)
+  // CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -17,10 +17,13 @@ export default async function handler(req, res) {
     return res.status(200).end();
   }
 
-  // Credenciales SOLO en el servidor con SERVICE KEY (bypassa RLS)
+  console.log('🔐 Admin login attempt - Environment check:');
+  console.log('SUPABASE_URL:', process.env.SUPABASE_URL ? '✅ Present' : '❌ Missing');
+  console.log('SUPABASE_SERVICE_KEY:', process.env.SUPABASE_SERVICE_KEY ? '✅ Present' : '❌ Missing');
+
   const supabase = createClient(
     process.env.SUPABASE_URL,
-    process.env.SUPABASE_SERVICE_KEY // ⬅️ Service key con permisos completos
+    process.env.SUPABASE_SERVICE_KEY
   );
 
   const { username, password } = req.body;
@@ -36,21 +39,24 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Buscar admin en la base de datos
+    console.log('📊 Querying admins table...');
+    
     const { data, error } = await supabase
       .from('admins')
-      .select('id, username, wedding_name') // NO devolver password
+      .select('id, username, wedding_name')
       .eq('username', username)
-      .eq('password', password) // TODO: Reemplazar con bcrypt
+      .eq('password', password)
       .single();
 
+    console.log('Query result:', { hasData: !!data, hasError: !!error });
+    if (error) console.error('Supabase error:', error);
+
     if (error || !data) {
-      // Esperar 1 segundo para prevenir brute force
       await new Promise(resolve => setTimeout(resolve, 1000));
-      return res.status(401).json({ error: 'Invalid credentials' });
+      return res.status(401).json({ success: false, error: 'Invalid credentials' });
     }
 
-    // Login exitoso - devolver datos del admin
+    console.log('✅ Login successful');
     return res.status(200).json({
       success: true,
       admin: {
@@ -61,7 +67,7 @@ export default async function handler(req, res) {
     });
 
   } catch (err) {
-    console.error('Error:', err);
-    return res.status(500).json({ error: 'Server error' });
+    console.error('❌ Server error:', err);
+    return res.status(500).json({ success: false, error: 'Server error', details: err.message });
   }
 }

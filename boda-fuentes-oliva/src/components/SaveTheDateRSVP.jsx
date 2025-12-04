@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { submitSaveTheDateRSVP } from '../lib/supabase';
+import { validateName } from '../utils/validation';
 import '../styles/SaveTheDateRSVP.css';
 
 const SaveTheDateRSVP = () => {
@@ -9,11 +10,18 @@ const SaveTheDateRSVP = () => {
   const [response, setResponse] = useState(null);
 
   const handleSubmit = async (willAttend) => {
-    if (!fullName.trim() || isSubmitting) return;
+    if (isSubmitting) return;
+
+    // Validar nombre
+    const nameValidation = validateName(fullName);
+    if (!nameValidation.isValid) {
+      alert(nameValidation.error);
+      return;
+    }
 
     setIsSubmitting(true);
 
-    const result = await submitSaveTheDateRSVP(fullName, willAttend);
+    const result = await submitSaveTheDateRSVP(nameValidation.sanitized, willAttend);
 
     if (result.success) {
       setSubmitted(true);

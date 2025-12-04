@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { adminLogin, getAttendanceStats, getSaveTheDateStats } from '../lib/supabase';
+import TableAssignment from '../components/TableAssignment';
+import MessagesView from '../components/MessagesView';
+import { exportInvitationData, exportSaveTheDateData } from '../utils/excelExport';
+import { validateUsername, validatePassword } from '../utils/validation';
 import '../styles/AdminPanel.css';
 
 const AdminPanel = () => {
@@ -12,9 +16,9 @@ const AdminPanel = () => {
   const [stats, setStats] = useState(null);
   const [saveTheDateStats, setSaveTheDateStats] = useState(null);
   const [activeTab, setActiveTab] = useState('invitation'); // 'invitation' o 'savethedate'
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
-    // Verificar si ya está autenticado
     const adminSession = sessionStorage.getItem('adminSession');
     if (adminSession) {
       setIsAuthenticated(true);
@@ -36,7 +40,25 @@ const AdminPanel = () => {
     setError('');
     setLoading(true);
 
-    const admin = await adminLogin(username, password);
+    const usernameValidation = validateUsername(username);
+    if (!usernameValidation.isValid) {
+      setError(usernameValidation.error);
+      setLoading(false);
+      return;
+    }
+
+    // Validar password
+    const passwordValidation = validatePassword(password);
+    if (!passwordValidation.isValid) {
+      setError(passwordValidation.error);
+      setLoading(false);
+      return;
+    }
+
+    const admin = await adminLogin(
+      usernameValidation.sanitized, 
+      passwordValidation.sanitized
+    );
 
     if (admin) {
       sessionStorage.setItem('adminSession', JSON.stringify(admin));
@@ -116,29 +138,76 @@ const AdminPanel = () => {
   return (
     <div className="admin-panel">
       <div className="admin-header">
-        <h1>Panel de Administración</h1>
+        <div className="header-left">
+          <button 
+            className="sidebar-toggle" 
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+            aria-label="Toggle menu"
+          >
+            {sidebarOpen ? '✕' : '☰'}
+          </button>
+          <h1>Panel de Administración</h1>
+        </div>
         <button onClick={handleLogout} className="logout-btn">Cerrar Sesión</button>
       </div>
 
-      {/* Pestañas de navegación */}
-      <div className="admin-tabs">
+      <div className={`admin-sidebar ${sidebarOpen ? 'open' : ''}`}>
         <button 
-          className={`tab-btn ${activeTab === 'invitation' ? 'active' : ''}`}
-          onClick={() => setActiveTab('invitation')}
+          className={`sidebar-item ${activeTab === 'invitation' ? 'active' : ''}`}
+          onClick={() => {
+            setActiveTab('invitation');
+            setSidebarOpen(false);
+          }}
         >
-          📨 Invitación
+          <span className="sidebar-icon">📨</span>
+          <span className="sidebar-label">Invitación</span>
         </button>
         <button 
-          className={`tab-btn ${activeTab === 'savethedate' ? 'active' : ''}`}
-          onClick={() => setActiveTab('savethedate')}
+          className={`sidebar-item ${activeTab === 'savethedate' ? 'active' : ''}`}
+          onClick={() => {
+            setActiveTab('savethedate');
+            setSidebarOpen(false);
+          }}
         >
-          📅 Save The Date
+          <span className="sidebar-icon">📅</span>
+          <span className="sidebar-label">Save The Date</span>
+        </button>
+        <button 
+          className={`sidebar-item ${activeTab === 'tables' ? 'active' : ''}`}
+          onClick={() => {
+            setActiveTab('tables');
+            setSidebarOpen(false);
+          }}
+        >
+          <span className="sidebar-icon">🪑</span>
+          <span className="sidebar-label">Mesas</span>
+        </button>
+        <button 
+          className={`sidebar-item ${activeTab === 'messages' ? 'active' : ''}`}
+          onClick={() => {
+            setActiveTab('messages');
+            setSidebarOpen(false);
+          }}
+        >
+          <span className="sidebar-icon">💌</span>
+          <span className="sidebar-label">Mensajes</span>
         </button>
       </div>
 
-      {/* Contenido de Invitación */}
-      {activeTab === 'invitation' && (
-        <>
+      {sidebarOpen && (
+        <div 
+          className="sidebar-overlay" 
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
+      <div className="admin-content">
+        {activeTab === 'invitation' && (
+          <>
+            <button onClick={() => exportInvitationData(stats)} className="export-excel-btn">
+              📥 Descargar Excel
+            </button>
+
           <div className="admin-stats">
             <div className="stat-card">
               <h3>Total Invitados</h3>
@@ -148,15 +217,19 @@ const AdminPanel = () => {
               <h3>Confirmados</h3>
               <div className="stat-number">{stats.confirmed}</div>
             </div>
+            <div className="stat-card danger">
+              <h3>Declinados</h3>
+              <div className="stat-number">{stats.declined}</div>
+            </div>
             <div className="stat-card warning">
               <h3>Pendientes</h3>
               <div className="stat-number">{stats.pending}</div>
             </div>
             <div className="stat-card info">
               <h3>Total Asistentes</h3>
-          <div className="stat-number">{stats.totalAttendees}</div>
-        </div>
-      </div>
+              <div className="stat-number">{stats.totalAttendees}</div>
+            </div>
+          </div>
 
       <div className="guests-section">
         <h2>✅ Confirmados ({confirmedGuests.length})</h2>
@@ -205,15 +278,18 @@ const AdminPanel = () => {
         </div>
       </div>
 
-      <button onClick={loadStats} className="refresh-btn">
-        🔄 Actualizar Datos
-      </button>
+          <button onClick={loadStats} className="refresh-btn">
+            🔄 Actualizar Datos
+          </button>
         </>
       )}
 
-      {/* Contenido de Save The Date */}
       {activeTab === 'savethedate' && (
         <>
+          <button onClick={() => exportSaveTheDateData(saveTheDateStats)} className="export-excel-btn">
+            📥 Descargar Excel
+          </button>
+
           <div className="admin-stats">
             <div className="stat-card">
               <h3>Total Respuestas</h3>
@@ -276,6 +352,15 @@ const AdminPanel = () => {
           </button>
         </>
       )}
+
+      {activeTab === 'tables' && (
+        <TableAssignment stats={stats} saveTheDateStats={saveTheDateStats} />
+      )}
+
+      {activeTab === 'messages' && (
+        <MessagesView />
+      )}
+      </div>
       
       <footer className="page-footer">
         <p>© {new Date().getFullYear()} LFDevStudio. Todos los derechos reservados.</p>

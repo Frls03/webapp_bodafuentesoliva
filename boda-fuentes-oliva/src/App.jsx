@@ -11,7 +11,7 @@ function App() {
   const isAdminPage = location.pathname === '/admin';
   
   // Puedes cambiar esto a false para ocultar el enlace de invitación
-  const showInviteLink = true;
+  const showInviteLink = false;
 
   return (
     <div className="app">

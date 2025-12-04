@@ -19,6 +19,15 @@ export default defineConfig({
       protocol: 'wss',
       host: 'fortuitous-juliette-unrhetorical.ngrok-free.dev', // o deja vacío si usas allowedHosts:true
       clientPort: 443
+    },
+    
+    // Proxy para las API calls al backend de Vercel
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3000',
+        changeOrigin: true,
+        secure: false
+      }
     }
   },
   preview: {

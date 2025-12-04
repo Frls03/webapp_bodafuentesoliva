@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import '../styles/PasswordGate.css';
-import { validatePassword } from '../lib/supabase';
+import { getGuestByPassword } from '../lib/supabase';
 
 const PasswordGate = ({ onAuthenticated }) => {
   const [password, setPassword] = useState('');
@@ -14,15 +14,12 @@ const PasswordGate = ({ onAuthenticated }) => {
     setLoading(true);
 
     try {
-      // Consultar Supabase
-      const guest = await validatePassword(password.trim());
+      const guest = await getGuestByPassword(password.trim());
 
       if (guest) {
-        // Guardar en sessionStorage para mantener la sesión
         sessionStorage.setItem('guestData', JSON.stringify(guest));
-        // Notificar al componente padre que la autenticación fue exitosa
         onAuthenticated(guest);
-        setPassword(''); // Limpiar el input
+        setPassword('');
       } else {
         setError('Contraseña incorrecta. Por favor, verifica tu invitación.');
         setPassword('');

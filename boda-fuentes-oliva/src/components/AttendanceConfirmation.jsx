@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import { confirmAttendance } from '../lib/supabase';
+import { validateNotes, validateAttendanceCount } from '../utils/validation';
 import '../styles/AttendanceConfirmation.css';
 
 const AttendanceConfirmation = ({ guestData, onConfirmed }) => {
-  // Calcular el máximo de personas permitidas:
-  // Si tiene max_attendees definido, usar ese valor
-  // Si no, usar la cantidad de nombres en el array (pareja o soltero)
   const maxAllowed = guestData.max_attendees || guestData.names.length;
   
   const [willAttend, setWillAttend] = useState(guestData.attendance_confirmed || null);
@@ -19,10 +17,24 @@ const AttendanceConfirmation = ({ guestData, onConfirmed }) => {
     setLoading(true);
     setMessage('');
 
+    const notesValidation = validateNotes(notes);
+    if (!notesValidation.isValid) {
+      setMessage(`❌ ${notesValidation.error}`);
+      setLoading(false);
+      return;
+    }
+
+    const countValidation = validateAttendanceCount(attendeeCount);
+    if (!countValidation.isValid) {
+      setMessage(`❌ ${countValidation.error}`);
+      setLoading(false);
+      return;
+    }
+
     const result = await confirmAttendance(guestData.id, {
       confirmed: willAttend,
-      count: willAttend ? attendeeCount : 0,
-      notes: notes.trim()
+      count: willAttend ? countValidation.sanitized : 0,
+      notes: notesValidation.sanitized
     });
 
     if (result.success) {
@@ -30,7 +42,6 @@ const AttendanceConfirmation = ({ guestData, onConfirmed }) => {
       if (onConfirmed) {
         onConfirmed(result.data);
       }
-      // Actualizar sessionStorage
       const updatedGuest = { ...guestData, ...result.data };
       sessionStorage.setItem('guestData', JSON.stringify(updatedGuest));
     } else {

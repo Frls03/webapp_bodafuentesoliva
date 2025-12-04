@@ -8,13 +8,14 @@ import PasswordGate from '../components/PasswordGate';
 import CloudinaryUpload from '../components/CloudinaryUpload';
 import AttendanceConfirmation from '../components/AttendanceConfirmation';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
+import { saveGuestMessage } from '../lib/supabase';
+import { validateName, validateMessage } from '../utils/validation';
 
 const Invite = () => {
   const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [guestData, setGuestData] = useState(null);
 
-  // Estados de visibilidad para cada módulo - Estilo SaveTheDate
   const [guestNamesVisible, setGuestNamesVisible] = useState(true);
   const [timelineVisible, setTimelineVisible] = useState(true);
   const [dressCodeVisible, setDressCodeVisible] = useState(false);
@@ -23,7 +24,12 @@ const Invite = () => {
   const [confirmationVisible, setConfirmationVisible] = useState(false);
   const [momentsVisible, setMomentsVisible] = useState(false);
 
-  // Hooks para animar cada outfit individualmente cuando el módulo Dress Code es visible
+  const [senderName, setSenderName] = useState('');
+  const [messageText, setMessageText] = useState('');
+  const [sendingMessage, setSendingMessage] = useState(false);
+  const [messageSent, setMessageSent] = useState(false);
+  const [messageError, setMessageError] = useState('');
+
   const outfit1Anim = useScrollAnimation({ threshold: 0.3 }, true);
   const outfit2Anim = useScrollAnimation({ threshold: 0.3 }, true);
   const outfit3Anim = useScrollAnimation({ threshold: 0.3 }, true);
@@ -31,13 +37,11 @@ const Invite = () => {
   const outfit5Anim = useScrollAnimation({ threshold: 0.3 }, true);
   const outfit6Anim = useScrollAnimation({ threshold: 0.3 }, true);
 
-  // Control de visibilidad de módulos basado en scroll
   useEffect(() => {
     const handleScroll = () => {
       const scrollPosition = window.scrollY;
       const windowHeight = window.innerHeight;
 
-      // Obtener las posiciones de cada módulo
       const guestNamesSection = document.querySelector('.guest-names-module');
       const timelineSection = document.querySelector('.timeline-module');
       const dressCodeSection = document.querySelector('.dress-code-module');
@@ -90,31 +94,27 @@ const Invite = () => {
         scrollPosition < detailsZone.end
       );
 
-      // Location: visible en su zona
       setLocationVisible(
         scrollPosition >= locationZone.start && 
         scrollPosition < locationZone.end
       );
 
-      // Confirmation: visible en su zona
       setConfirmationVisible(
         scrollPosition >= confirmationZone.start && 
         scrollPosition < confirmationZone.end
       );
 
-      // Moments: visible desde su inicio hasta el final
       setMomentsVisible(scrollPosition >= momentsZone.start);
     };
 
     window.addEventListener('scroll', handleScroll);
-    handleScroll(); // Ejecutar al montar
+    handleScroll();
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
-  // Verificar si ya hay una sesión guardada al cargar
   useEffect(() => {
     const savedGuest = sessionStorage.getItem('guestData');
     if (savedGuest) {
@@ -143,11 +143,63 @@ const Invite = () => {
     navigate('/home');
   };
 
-  // Control de visibilidad del módulo de confirmación
-  // Cambia esto a false para ocultar el módulo completamente
+  const handleSendMessage = async () => {
+    // Validar nombre del remitente
+    const nameValidation = validateName(senderName);
+    if (!nameValidation.isValid) {
+      setMessageError(nameValidation.error);
+      return;
+    }
+
+    // Validar mensaje
+    const messageValidation = validateMessage(messageText);
+    if (!messageValidation.isValid) {
+      setMessageError(messageValidation.error);
+      return;
+    }
+
+    setSendingMessage(true);
+    setMessageError('');
+
+    try {
+      // Usar valores sanitizados
+      const result = await saveGuestMessage(
+        guestData.id, 
+        nameValidation.sanitized, 
+        messageValidation.sanitized
+      );
+
+      if (!result.success) {
+        throw new Error('Error al guardar el mensaje');
+      }
+
+      setSenderName('');
+      setMessageText('');
+      setMessageSent(true);
+
+      setTimeout(() => setMessageSent(false), 5000);
+    } catch (error) {
+      console.error('Error:', error);
+      setMessageError('No se pudo enviar el mensaje. Por favor intenta de nuevo.');
+    } finally {
+      setSendingMessage(false);
+    }
+  };
+
+  const handleOpenWaze = () => {
+    const address = "Casa Blanca Glamping, Km 38.5 ruta nacional 10";
+    const wazeUrl = `https://waze.com/ul?q=${encodeURIComponent(address)}&navigate=yes`;
+    window.open(wazeUrl, '_blank');
+  };
+
+  const handleOpenMaps = () => {
+    const address = "Casa Blanca Glamping, Km 38.5 ruta nacional 10";
+    const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
+    window.open(mapsUrl, '_blank');
+  };
+
   const showConfirmationModule = true;
 
-  // Si no está autenticado, mostrar solo el gate de contraseña
   if (!isAuthenticated) {
     return <PasswordGate onAuthenticated={handleAuthenticated} />;
   }
@@ -293,8 +345,8 @@ const Invite = () => {
           </div>
           
           <div className="navigation-buttons">
-            <button className="nav-btn waze-btn">Ver en Waze</button>
-            <button className="nav-btn maps-btn">Ver en Maps</button>
+            <button className="nav-btn waze-btn" onClick={handleOpenWaze}>Ver en Waze</button>
+            <button className="nav-btn maps-btn" onClick={handleOpenMaps}>Ver en Maps</button>
           </div>
           
           <div className="practical-advice">
@@ -358,20 +410,41 @@ const Invite = () => {
               type="text" 
               placeholder="Tu nombre" 
               className="name-input"
+              value={senderName}
+              onChange={(e) => setSenderName(e.target.value)}
             />
             <textarea 
               placeholder="Tu nota o mensaje" 
               className="message-input"
+              value={messageText}
+              onChange={(e) => setMessageText(e.target.value)}
             ></textarea>
           </div>
           
           {/* Componente de upload de Cloudinary */}
           <CloudinaryUpload />
           
+          {messageSent && (
+            <div className="message-success">
+              ✅ ¡Mensaje enviado! Gracias por compartir.
+            </div>
+          )}
+          {messageError && (
+            <div className="message-error">
+              ⚠️ {messageError}
+            </div>
+          )}
+          
           <div className="action-buttons">
-            <button className="action-btn message-btn">
+            <button 
+              className="action-btn message-btn"
+              onClick={handleSendMessage}
+              disabled={sendingMessage || !senderName.trim() || !messageText.trim()}
+            >
               <span className="btn-icon">📝</span>
-              <span className="btn-text">Deja tu mensaje</span>
+              <span className="btn-text">
+                {sendingMessage ? 'Enviando...' : 'Deja tu mensaje'}
+              </span>
             </button>
           </div>
           

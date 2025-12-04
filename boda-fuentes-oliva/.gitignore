@@ -16,6 +16,7 @@ dist-ssr
 .env
 .env.local
 .env.production
+.env.example
 
 # Editor directories and files
 .vscode/*
@@ -27,3 +28,22 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+.vercel
+.env*.local
+
+# Archivos SQL temporales (desarrollo/debugging)
+ARREGLAR_RLS_URGENTE.sql
+PASO2_DESACTIVAR_RLS_DEV.sql
+PASO3_REACTIVAR_RLS_DEPLOY.sql
+VERIFICAR_RLS_REAL.sql
+DESACTIVAR_RLS.sql
+REACTIVAR_RLS.sql
+*_TEMP.sql
+*_DEV.sql
+*_DEBUG.sql
+
+# SQLite databases
+*.sqlite
+*.sqlite3
+*.db

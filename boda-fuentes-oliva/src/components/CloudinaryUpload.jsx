@@ -7,15 +7,12 @@ const CloudinaryUpload = () => {
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [error, setError] = useState('');
 
-  // Configuración de Cloudinary
   const cloudName = 'dp4n2foim';
   const uploadPreset = 'prueba';
   
   const cld = new Cloudinary({ cloud: { cloudName } });
 
-  // Cargar el script del widget de Cloudinary
   useEffect(() => {
-    // Verificar si el script ya está cargado
     if (window.cloudinary) return;
 
     const script = document.createElement('script');
@@ -24,7 +21,6 @@ const CloudinaryUpload = () => {
     document.body.appendChild(script);
 
     return () => {
-      // Cleanup si es necesario
       if (script.parentNode) {
         script.parentNode.removeChild(script);
       }
@@ -32,7 +28,6 @@ const CloudinaryUpload = () => {
   }, []);
 
   const openUploadWidget = () => {
-    // Verificar que el widget esté disponible
     if (!window.cloudinary) {
       setError('El widget de carga aún no está disponible. Intenta de nuevo en un momento.');
       return;
@@ -43,13 +38,13 @@ const CloudinaryUpload = () => {
         cloudName: cloudName,
         uploadPreset: uploadPreset,
         folder: 'fotos-videos',
-        sources: ['local', 'camera'], // Permitir subir desde galería o cámara
-        multiple: true, // Permitir múltiples archivos
-        maxFileSize: 100000000, // 100MB en bytes
-        maxFiles: 10, // Máximo 10 archivos por sesión
-        clientAllowedFormats: ['image', 'video'], // Solo imágenes y videos
-        resourceType: 'auto', // Detectar automáticamente el tipo
-        cropping: false, // Sin recorte
+        sources: ['local', 'camera'],
+        multiple: true,
+        maxFileSize: 100000000,
+        maxFiles: 10,
+        clientAllowedFormats: ['image', 'video'],
+        resourceType: 'auto',
+        cropping: false,
         showSkipCropButton: true,
         language: 'es', // Interfaz en español
         text: {

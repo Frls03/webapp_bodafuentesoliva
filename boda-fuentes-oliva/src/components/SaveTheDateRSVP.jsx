@@ -60,8 +60,10 @@ const SaveTheDateRSVP = () => {
   return (
     <div className="std-rsvp-container">
       <div className="std-rsvp-box">
-        <h4 className="std-rsvp-title">¿Nos acompañarás?</h4>
-        <p className="std-rsvp-subtitle">Ayúdanos a planear mejor</p>
+        <h4 className="std-rsvp-title">
+          <span className="std-rsvp-title-main">¿Nos acompañas?</span>
+        </h4>
+        <p className="std-rsvp-subtitle">Confirma tu asistencia llenando los datos, (el proceso es individual)</p>
         
         <input
           type="text"

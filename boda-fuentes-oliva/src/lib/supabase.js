@@ -96,29 +96,22 @@ export const confirmAttendance = async (guestId, attendanceData) => {
 export const adminLogin = async (username, password) => {
   try {
     if (USE_API) {
-      console.log('🔐 Attempting admin login via API...');
-      console.log('API URL:', '/api/admin-login');
-      
       const response = await fetch('/api/admin-login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
       });
 
-      console.log('Response status:', response.status);
       const result = await response.json();
-      console.log('Response data:', result);
 
       if (result.success) {
-        console.log('✅ Login successful');
         return result.admin;
       }
 
-      console.error('❌ Admin login error:', result.error);
+      console.error('Admin login error:', result.error);
       return null;
     }
     
-    console.log('🔐 Using direct Supabase login (dev mode)');
     const { data, error } = await supabase
       .from('admins')
       .select('*')
@@ -133,7 +126,7 @@ export const adminLogin = async (username, password) => {
 
     return data;
   } catch (err) {
-    console.error('❌ Unexpected error in adminLogin:', err);
+    console.error('Unexpected error:', err);
     return null;
   }
 };

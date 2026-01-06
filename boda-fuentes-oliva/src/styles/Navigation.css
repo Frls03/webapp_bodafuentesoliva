@@ -3,9 +3,9 @@
   top: 0;
   left: 0;
   right: 0;
-  background: rgba(255, 255, 255, 0.95); /* light palette tint */;
+  background:transparent; /* light palette tint */;
   backdrop-filter: none;
-  border-bottom: 1px solid rgba(66,72,29,0.08);
+  border-bottom: 0px solid rgba(66,72,29,0.08);
   z-index: 1000;
   padding: 20px 0;
 }

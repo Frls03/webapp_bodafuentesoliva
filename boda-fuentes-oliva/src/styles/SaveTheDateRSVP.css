@@ -9,7 +9,7 @@
 }
 
 .std-rsvp-box {
-  background: var(--std-dark-olive, #4a5730);
+  background: #434a21;
   border-radius: 20px;
   padding: 40px 30px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
@@ -93,7 +93,7 @@
 
 .std-rsvp-btn.yes {
   background: var(--std-white, #ffffff);
-  color: var(--std-dark-olive, #4a5730);
+  color: #434a21;
 }
 
 .std-rsvp-btn.yes:hover:not(:disabled) {
@@ -130,7 +130,7 @@
   width: 60px;
   height: 60px;
   background: var(--std-white, #ffffff);
-  color: var(--std-dark-olive, #4a5730);
+  color: #434a21;
   border-radius: 50%;
   display: flex;
   align-items: center;

@@ -75,9 +75,8 @@ const SaveTheDate = () => {
           <div className="std-month-large">MAYO</div>
 
           <div className="std-invitation-text">
-            <p>Nos encantaría que seas parte de este</p>
-            <p>momento tan especial para nosotros</p>
-            <p>¡Falta poco!</p>
+            <p>Nos encantaría que seas parte de este momento tan especial para nosotros </p>
+              <p>¡Falta poco!</p>
           </div>
 
           <div className="std-location">

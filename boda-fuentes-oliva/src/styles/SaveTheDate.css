@@ -226,7 +226,7 @@
 
 .std-section-2 {
   position: relative;
-  width: calc(100% - 40px);
+  width: calc(100% - clamp(20px, 5vw, 40px));
   max-width: 500px;
   min-height: 100vh;
   background: #434a21;
@@ -234,8 +234,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 118px 30px 60px;
-  margin: -300px auto 0;
+  padding: clamp(80px, 20vh, 135px) clamp(20px, 8vw, 40px) 60px;
+  margin: clamp(-350px, -40vh, -250px) auto 0;
   border-radius: 200px 200px 0 0;
 }
 
@@ -263,30 +263,30 @@
 }
 
 .std-date-display {
-display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    align-items: center;
-    justify-items: center;
-    column-gap: 30px;
-    width: 109%;
-    max-width: 760px;
-    margin: 11px auto;
-    padding: 24px 24px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  justify-items: center;
+  column-gap: clamp(15px, 5vw, 30px);
+  width: 100%;
+  max-width: 760px;
+  margin: 11px auto;
+  padding: clamp(15px, 3vh, 20px) 4px;
 }
 
 .std-day-label,
 .std-month-label {
   font-family: 'The Seasons', serif;
-  font-size: clamp(0.9rem, 2vw, 1.1rem);
+  font-size: clamp(0.75rem, 2.5vw, 1.1rem);
   font-weight: 300;
-  letter-spacing: 2px;
+  letter-spacing: clamp(1px, 0.3vw, 2px);
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 10px 0;
-  width: 162%;
-  left: -10px;
+  padding: clamp(8px, 2vh, 10px) 0;
+  width: 100%;
+  max-width: 100%;
   text-align: center;
 }
 
@@ -296,20 +296,20 @@ display: grid;
 .std-month-label::after {
   content: '';
   position: absolute;
-  left: 18px;
-  right: 18px;
+  left: -0.5rem;
+  right: -0.5rem;
   height: 1px;
   background: rgba(255, 255, 255, 0.7);
 }
 
 .std-day-label::before,
 .std-month-label::before {
-  top: 0;
+  top: 2px;
 }
 
 .std-day-label::after,
 .std-month-label::after {
-  bottom: 0;
+  bottom: 5px;
 }
 
 .std-day-number {
@@ -317,30 +317,35 @@ display: grid;
   font-size: clamp(3rem, 8vw, 5rem);
   font-weight: 300;
   line-height: 1;
-  margin-left: -15px;
+  margin: 0;
 }
 
 .std-month-large {
   font-family: 'The Seasons', serif;
   font-size: clamp(2.5rem, 6vw, 3.5rem);
   font-weight: 300;
-  letter-spacing: 3px;
-  margin: 30px 0;
+  letter-spacing: clamp(2px, 0.5vw, 3px);
+  margin: clamp(20px, 4vh, 30px) auto;
   text-align: center;
-  margin-top: -33px;
+  margin-top: clamp(-40px, -5vh, -33px);
+  width: 100%;
 }
 
 .std-invitation-text {
   margin: 30px 0;
-  text-align: center;
+  text-align: justify;
+  padding: 0 10px;
+  max-width: 100%;
 }
 
 .std-invitation-text p {
   font-family: 'Montserrat', sans-serif;
   font-size: clamp(0.95rem, 2.5vw, 1.1rem);
   line-height: 1.6;
-  margin: 5px 0;
+  margin: 5px auto;
   opacity: 0.95;
+  max-width: 100%;
+  text-align: center;
 }
 
 .std-location {

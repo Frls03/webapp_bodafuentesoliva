@@ -69,10 +69,10 @@ const SaveTheDate = () => {
           <div className="std-date-display">
             <span className="std-day-label">DOMINGO</span>
             <span className="std-day-number">03</span>
-            <span className="std-month-label">15:00Hrs</span>
+            <span className="std-month-label" translate="no">15:00Hrs</span>
           </div>
 
-          <div className="std-month-large">MAYO</div>
+          <div className="std-month-large" translate="no">MAYO</div>
 
           <div className="std-invitation-text">
             <p>Nos encantaría que seas parte de este momento tan especial para nosotros </p>

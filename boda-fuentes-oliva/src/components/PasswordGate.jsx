@@ -15,7 +15,8 @@ const PasswordGate = ({ onAuthenticated }) => {
     setLoading(true);
 
     try {
-      const guest = await getGuestByPassword(password.trim());
+      const normalizedPassword = password.trim().toLowerCase();
+      const guest = await getGuestByPassword(normalizedPassword);
 
       if (guest) {
         sessionStorage.setItem('guestData', JSON.stringify(guest));
@@ -87,7 +88,7 @@ const PasswordGate = ({ onAuthenticated }) => {
 
         <div className="gate-help">
           <p className="help-text">
-            ¿No tienes tu contraseña? Revisa tu invitación o contacta a los novios.
+            ¿No tienes tu contraseña? Revisa el mensaje de WhatsApp que te llegó o contacta a los novios.
           </p>
         </div>
 

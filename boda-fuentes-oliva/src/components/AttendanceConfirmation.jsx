@@ -53,7 +53,7 @@ const AttendanceConfirmation = ({ guestData, onConfirmed }) => {
 
   return (
     <div className="attendance-confirmation">
-      <h2 className="attendance-title">Confirma tu asistencia</h2>
+      
       
       <form onSubmit={handleSubmit} className="attendance-form">
         <div className="attendance-question">

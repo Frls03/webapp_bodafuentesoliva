@@ -1,0 +1,215 @@
+.moments-page {
+  min-height: 100vh;
+  background: #f7f4ef;
+  color: #5a3e36;
+}
+
+.moments-hero {
+  text-align: center;
+  padding: 80px 20px 40px;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.15)),
+    url('/images/AJ1_2147.jpg') center/cover no-repeat;
+  color: #ffffff;
+}
+
+.moments-hero h1 {
+  font-family: 'The Seasons', serif;
+  font-size: clamp(2.2rem, 5vw, 3.2rem);
+  letter-spacing: 2px;
+  margin-bottom: 12px;
+}
+
+.moments-hero p {
+  font-family: 'Montserrat', sans-serif;
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
+  margin: 0;
+}
+
+.moments-content {
+  padding: 50px 20px 80px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.moments-page .moments-text {
+  max-width: 700px;
+  margin: 0 auto 40px;
+  text-align: center;
+}
+
+.moments-page .moments-text p {
+  font-family: 'Crimson Text', serif;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #5a3e36;
+  margin: 12px 0;
+}
+
+.moments-page .italic-text {
+  font-style: italic;
+  font-size: 1rem !important;
+}
+
+.moments-page .no-phones-section {
+  display: flex;
+  align-items: center;
+  max-width: 700px;
+  margin: 30px auto;
+  gap: 16px;
+  justify-content: center;
+}
+
+.moments-page .no-phones-icon {
+  font-size: 2rem;
+}
+
+.moments-page .no-phones-text p {
+  font-family: 'Crimson Text', serif;
+  font-size: 1rem;
+  color: #5a3e36;
+  margin: 6px 0;
+}
+
+.moments-page .input-fields {
+  max-width: 600px;
+  margin: 30px auto;
+}
+
+.moments-page .name-input,
+.moments-page .message-input {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid rgba(90, 62, 54, 0.2);
+  border-radius: 10px;
+  background: #ffffff;
+  color: #5a3e36;
+  font-family: 'Crimson Text', serif;
+  font-size: 1rem;
+  margin: 10px 0;
+  box-sizing: border-box;
+}
+
+.moments-page .message-input {
+  height: 140px;
+  resize: vertical;
+}
+
+.moments-page .message-success,
+.moments-page .message-error {
+  max-width: 600px;
+  margin: 20px auto 0;
+  padding: 12px 16px;
+  border-radius: 10px;
+  text-align: center;
+  font-family: 'Crimson Text', serif;
+}
+
+.moments-page .message-success {
+  background: rgba(76, 175, 80, 0.15);
+  color: #2e7d32;
+  border: 1px solid rgba(76, 175, 80, 0.4);
+}
+
+.moments-page .message-error {
+  background: rgba(244, 67, 54, 0.15);
+  color: #c62828;
+  border: 1px solid rgba(244, 67, 54, 0.4);
+}
+
+.moments-page .action-buttons {
+  max-width: 420px;
+  margin: 30px auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+}
+
+.moments-page .action-btn {
+  width: 100%;
+  padding: 12px 18px;
+  border: 1px solid rgba(90, 62, 54, 0.25);
+  border-radius: 999px;
+  background: transparent;
+  color: #5a3e36;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.moments-page .action-btn:hover:not(:disabled) {
+  background: #5a3e36;
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+.moments-page .action-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.moments-locked-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  background: #f7f4ef;
+}
+
+.moments-locked-card {
+  max-width: 560px;
+  width: 90%;
+  text-align: center;
+  padding: 40px 30px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 18px;
+  border: 1px solid rgba(90, 62, 54, 0.15);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+}
+
+.moments-locked-card h1 {
+  font-family: 'The Seasons', serif;
+  font-size: 2rem;
+  margin-bottom: 12px;
+  color: #5a3e36;
+}
+
+.moments-locked-card p {
+  font-family: 'Crimson Text', serif;
+  color: #5a3e36;
+  margin-bottom: 24px;
+}
+
+.moments-back-btn {
+  padding: 12px 24px;
+  border-radius: 999px;
+  border: 1px solid #5a3e36;
+  background: transparent;
+  color: #5a3e36;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.moments-back-btn:hover {
+  background: #5a3e36;
+  color: #ffffff;
+}
+
+@media (max-width: 768px) {
+  .moments-hero {
+    padding: 60px 16px 30px;
+  }
+
+  .moments-page .no-phones-section {
+    flex-direction: column;
+    text-align: center;
+  }
+}

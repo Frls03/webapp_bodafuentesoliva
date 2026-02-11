@@ -1,0 +1,993 @@
+
+
+/* Tipografías del proyecto */
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Allura&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap');
+@font-face {
+  font-family: "The Seasons";
+  src: url("/fonts/theseasons/theseasons-lt.woff") format("woff");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "The Seasons";
+  src: url("/fonts/theseasons/theseasons-reg.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "The Seasons";
+  src: url("/fonts/theseasons/theseasons-bd.woff") format("woff");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Eyesome Script";
+  src: url("/fonts/eyesomeScript/Eyesome-Script.woff2") format("woff2"),
+       url("/fonts/eyesomeScript/Eyesome-Script.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+.invite-new {
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* MÓDULO 1: HERO CON NOMBRES */
+
+.hero-section {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  background-image: url('/images/couple-1.jpg');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.3) 0%,
+    rgba(0, 0, 0, 0.1) 50%,
+    rgba(0, 0, 0, 0.3) 100%
+  );
+  filter: grayscale(100%);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: white;
+  padding: 20px;
+}
+
+@media (max-width: 768px) {
+  .hero-section {
+    align-items: flex-start;
+    padding-top: 12vh;
+  }
+
+  .hero-content {
+    padding-top: 0;
+  }
+}
+
+.hero-title {
+  font-family: 'The Seasons', serif;
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-weight: 400;
+  letter-spacing: 4px;
+  margin-bottom: 30px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.hero-title span {
+  font-family: inherit;
+}
+
+.hero-title span:first-child,
+.hero-title span:last-child {
+  font-family: 'Montserrat', sans-serif;
+}
+
+.hero-names {
+  font-family: 'Allura', cursive;
+  font-size: clamp(3rem, 8vw, 6rem);
+  font-weight: 400;
+  margin: 20px 0;
+  line-height: 1.2;
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.6);
+}
+
+.hero-date {
+  font-family: 'The Seasons', serif;
+  font-size: clamp(1.2rem, 3vw, 1.8rem);
+  font-weight: 300;
+  letter-spacing: 8px;
+  margin-top: 30px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.date-day-label::after {
+  bottom: 8px;
+}
+.date-day-label::before {
+  top: 7px;
+}
+.change-guest-btn {
+  position: fixed;
+  bottom: 30px;
+  left: 30px;
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 25px;
+  padding: 12px 24px;
+  font-family: 'The Seasons', serif;
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+}
+
+.change-guest-btn:hover {
+  background: rgba(255, 255, 255, 1);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* MÓDULO 2: COUNTDOWN */
+
+.countdown-section {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  overflow: hidden;
+}
+
+.countdown-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('/images/countinv.jpg');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.35;
+  z-index: 0;
+}
+
+.countdown-card {
+  position: relative;
+  z-index: 1;
+  background: white;
+  border-radius: 20px;
+  padding: clamp(40px, 6vw, 80px);
+  max-width: 900px;
+  width: 90%;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+.countdown-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 300;
+  text-align: center;
+  color: #333;
+  margin-bottom: 30px;
+  letter-spacing: 3px;
+}
+
+.countdown-timer {
+  display: flex;
+  justify-content: center;
+  gap: clamp(20px, 4vw, 40px);
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+}
+
+.countdown-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.countdown-number {
+  font-family: 'Montserrat', sans-serif;
+  font-size: clamp(3rem, 6vw, 4.5rem);
+  font-weight: 300;
+  color: #8b7355;
+  line-height: 1;
+}
+
+.countdown-label {
+  font-family: 'Montserrat', sans-serif;
+  font-size: clamp(0.7rem, 1.5vw, 0.9rem);
+  font-weight: 400;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.countdown-message {
+  text-align: center;
+  margin: 40px 0;
+  padding: 0 20px;
+}
+
+.countdown-message p {
+  font-family: 'Montserrat', sans-serif;
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
+  font-weight: 300;
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 15px;
+}
+
+.countdown-invitation {
+  font-weight: 400 !important;
+  color: #333 !important;
+  letter-spacing: 1px;
+  margin-top: 25px !important;
+}
+
+/* Estilo de fecha similar a SaveTheDate */
+.wedding-date-display {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  justify-items: center;
+  column-gap: clamp(15px, 5vw, 30px);
+  width: 100%;
+  max-width: 760px;
+  margin: 40px auto 0;
+  padding: clamp(10px, 2vh, 16px) 4px;
+}
+
+.date-day-label,
+.date-month-label {
+  font-family: 'Montserrat', sans-serif;
+  font-size: clamp(0.75rem, 2.5vw, 1.1rem);
+  font-weight: 300;
+  color: #8b7355;
+  text-transform: uppercase;
+  letter-spacing: clamp(1px, 0.3vw, 2px);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(8px, 2vh, 10px) 8px;
+  width: clamp(140px, 30vw, 190px);
+  max-width: 100%;
+  min-width: clamp(120px, 26vw, 170px);
+  text-align: center;
+  justify-self: center;
+}
+
+.date-day-label::before,
+.date-day-label::after,
+.date-month-label::before,
+.date-month-label::after {
+  content: '';
+  position: absolute;
+  left: -1%;
+  right: -1%;
+  height: 1px;
+  background: #c9b8a3;
+}
+
+.date-day-label::before,
+.date-month-label::before {
+  top: 2px;
+}
+
+.date-day-label::after,
+.date-month-label::after {
+  bottom: 5px;
+}
+
+.date-day-number {
+  font-family: 'Montserrat', sans-serif;
+  font-size: clamp(3rem, 8vw, 5rem);
+  font-weight: 300;
+  color: #8b7355;
+  line-height: 1;
+}
+
+@media (max-width: 520px) {
+  .countdown-timer {
+    flex-wrap: nowrap;
+    gap: 12px;
+    justify-content: space-between;
+  }
+
+  .countdown-unit {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  .countdown-number {
+    font-size: 2.1rem;
+  }
+
+  .countdown-label {
+    font-size: 0.6rem;
+    letter-spacing: 1px;
+  }
+
+  .wedding-date-display {
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    column-gap: 10px;
+    max-width: 100%;
+    padding: 8px 0;
+  }
+
+  .date-day-label,
+  .date-month-label {
+    width: clamp(110px, 34vw, 150px);
+    min-width: 0;
+    padding: 8px 6px;
+  }
+
+  .date-day-label::before,
+  .date-day-label::after,
+  .date-month-label::before,
+  .date-month-label::after {
+    left: 5px;
+    right: 0;
+  }
+
+  .date-day-label::after,
+  .date-month-label::after {
+    bottom: 8px;
+  }
+
+  .date-day-label::before,
+  .date-month-label::before {
+    top: 7px;
+  }
+}
+
+/* MÓDULO 3: CRONOGRAMA */
+
+
+.schedule-section {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+}
+
+.schedule-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  filter: grayscale(100%) brightness(0.4);
+  z-index: 0;
+}
+
+.schedule-content {
+  position: relative;
+  z-index: 1;
+  max-width: 900px;
+  width: 92%;
+}
+
+.schedule-title {
+  font-family: 'Eyesome Script', cursive;
+  font-size: clamp(3rem, 7vw, 5rem);
+  font-weight: 400;
+  color: white;
+  text-align: center;
+  margin-bottom: 40px;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.schedule-timeline {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  padding: 10px 0 10px 24px;
+}
+
+.schedule-line {
+  position: absolute;
+  left: 24px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: rgba(255, 255, 255, 0.6);
+  z-index: 0;
+}
+
+.schedule-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  column-gap: 22px;
+  align-items: start;
+}
+
+.schedule-icon {
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  justify-self: center;
+  z-index: 1;
+}
+
+.schedule-icon img {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  filter: brightness(0) invert(1) drop-shadow(0 1px 2px rgba(0, 0, 0, 0.35));
+}
+
+.schedule-details {
+  color: #ffffff;
+}
+
+.schedule-item-title {
+  font-family: 'The Seasons', serif;
+  font-size: clamp(1.2rem, 3.2vw, 1.7rem);
+  font-weight: 400;
+  letter-spacing: 2px;
+  margin-bottom: 6px;
+}
+
+.schedule-item-time {
+  font-family: 'Montserrat', sans-serif;
+  font-size: clamp(0.95rem, 2.4vw, 1.15rem);
+  font-weight: 300;
+  margin-bottom: 6px;
+}
+
+.schedule-item-location {
+  font-family: 'Montserrat', sans-serif;
+  font-size: clamp(0.85rem, 2.2vw, 1rem);
+  font-weight: 300;
+  line-height: 1.5;
+  opacity: 0.9;
+  margin-bottom: 16px;
+}
+
+.schedule-item-button {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: 999px;
+  padding: 8px 22px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #ffffff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.schedule-item-button:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-1px);
+}
+
+/* MÓDULO 4: POSTER CON FOTOS */
+
+.photos-section {
+  width: 100%;
+  padding: 80px 20px;
+  background: #f5f5f5;
+}
+
+.photos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.photo-frame {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease;
+}
+
+.photo-frame:hover {
+  transform: translateY(-10px);
+}
+
+.photo-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(50%);
+  transition: filter 0.3s ease;
+}
+
+.photo-frame:hover img {
+  filter: grayscale(0%);
+}
+
+/* MÓDULO 5: DRESS CODE */
+
+.dresscode-section {
+  width: 100%;
+  padding: 100px 20px;
+  background: white;
+  text-align: center;
+}
+
+.dresscode-title {
+  font-family: 'The Seasons', serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 300;
+  color: #333;
+  letter-spacing: 4px;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
+
+.dresscode-subtitle {
+  font-family: 'Crimson Text', serif;
+  font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+  font-weight: 300;
+  font-style: italic;
+  color: #666;
+  margin-bottom: 50px;
+  letter-spacing: 2px;
+}
+
+.dresscode-guidelines {
+  margin: 40px 0;
+}
+
+.dresscode-women,
+.dresscode-men {
+  font-family: 'The Seasons', serif;
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
+  font-weight: 400;
+  color: #555;
+  margin: 15px 0;
+  letter-spacing: 1px;
+}
+
+.color-palette {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin: 50px 0;
+  flex-wrap: wrap;
+}
+
+.color-circle {
+  width: clamp(40px, 6vw, 60px);
+  height: clamp(40px, 6vw, 60px);
+  border-radius: 50%;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
+}
+
+.color-circle:hover {
+  transform: scale(1.15);
+}
+
+.dresscode-note {
+  font-family: 'Crimson Text', serif;
+  font-size: clamp(0.8rem, 1.5vw, 0.95rem);
+  font-weight: 300;
+  font-style: italic bold;
+  color: #000000;
+  max-width: 600px;
+  margin: 30px auto 0;
+  line-height: 1.6;
+}
+
+/*MÓDULO 6: REGALOS */
+
+.gifts-section {
+  position: relative;
+  width: 100%;
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 20px 80px;
+  background: #ffffff;
+}
+
+.gifts-background {
+  position: relative;
+  top: auto;
+  left: auto;
+  width: 100%;
+  height: clamp(200px, 30vw, 320px);
+  background-image: url('/images/couple-1.jpg');
+  background-size: cover;
+  background-position: center 35%;
+  filter: grayscale(100%) brightness(0.6);
+  z-index: 0;
+}
+
+.gifts-content {
+  position: relative;
+  z-index: 1;
+  background: transparent;
+  border-radius: 0;
+  padding: clamp(30px, 5vw, 60px) 0 0;
+  max-width: 700px;
+  width: 90%;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .gifts-section {
+    padding: 0 0 60px;
+  }
+
+  .gifts-background {
+    width: 100vw;
+    height: 38vh;
+    margin-left: calc(50% - 50vw);
+  }
+
+  .gifts-content {
+    width: 90%;
+    padding-top: 24px;
+  }
+}
+
+@media (min-width: 769px) {
+  .gifts-section {
+    padding: 0 0 80px;
+  }
+
+  .gifts-background {
+    width: 100vw;
+    height: clamp(260px, 26vw, 420px);
+    margin-left: calc(50% - 50vw);
+  }
+}
+
+.gifts-title {
+  font-family: 'The Seasons', serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 300;
+  color: #5a3e36;
+  letter-spacing: 3px;
+  margin-bottom: 30px;
+  text-transform: uppercase;
+}
+
+.gifts-message {
+  font-family: 'Crimson Text', serif;
+  font-size: clamp(0.95rem, 2vw, 1.15rem);
+  font-weight: 300;
+  text-align: justify;
+  color: #555;
+  line-height: 1.8;
+  margin-bottom: 40px;
+}
+
+.gifts-link-text {
+  font-family: 'Montserrat', sans-serif;
+  font-size: clamp(0.95rem, 2vw, 1.05rem);
+  color: #5a3e36;
+  margin-bottom: 20px;
+}
+
+.gifts-options {
+  display: flex;
+  justify-content: center;
+}
+
+.gifts-link-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 28px;
+  border-radius: 999px;
+  border: 1px solid #434a21;
+  background: #434a21;
+  color: #ffffff;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.gifts-link-button:hover {
+  background: #343a19;
+  border-color: #343a19;
+  transform: translateY(-2px);
+}
+
+/* MÓDULO 7: CONFIRMACIÓN DE ASISTENCIA */
+
+.confirmation-section {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  background: transparent;
+  position: relative;
+  overflow: hidden;
+}
+
+.confirmation-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('/images/AJ1_2147.jpg');
+  background-size: cover;
+  background-position: center;
+  opacity: 1;
+  filter: grayscale(100%);
+  z-index: 0;
+}
+
+.confirmation-card {
+  position: relative;
+  z-index: 1;
+  max-width: 600px;
+  width: 90%;
+  text-align: center;
+  padding: clamp(30px, 5vw, 50px);
+  border-radius: 20px;
+  background: rgba(26, 26, 26, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(12px);
+}
+
+.confirmation-header {
+  margin-bottom: 40px;
+}
+
+.confirmation-title {
+  font-family: 'The Seasons', serif;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 400;
+  color: white;
+  letter-spacing: 3px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+/* MÓDULO 8: MOMENTOS COMPARTIDOS (BLOQUEADO) */
+
+.moments-lock-section {
+  width: 100%;
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  background: #ffffff;
+}
+
+.moments-lock-card {
+  max-width: 700px;
+  width: 90%;
+  text-align: center;
+  padding: clamp(30px, 5vw, 50px);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(90, 62, 54, 0.15);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(8px);
+}
+
+.moments-lock-title {
+  font-family: 'The Seasons', serif;
+  font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+  font-weight: 300;
+  color: #5a3e36;
+  letter-spacing: 2px;
+  margin-bottom: 18px;
+  text-transform: uppercase;
+}
+
+.moments-lock-text {
+  font-family: 'Crimson Text', serif;
+  font-size: clamp(1rem, 2.4vw, 1.15rem);
+  color: #5a3e36;
+  line-height: 1.7;
+  margin-bottom: 18px;
+}
+
+.moments-lock-note {
+  font-family: 'Montserrat', sans-serif;
+  font-size: clamp(0.9rem, 2vw, 1rem);
+  color: #7a635c;
+  margin-bottom: 24px;
+}
+
+.moments-lock-button {
+  padding: 12px 28px;
+  border-radius: 999px;
+  border: 1px solid #434a21;
+  background: #434a21;
+  color: #ffffff;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.moments-lock-button:hover:not(:disabled) {
+  background: #343a19;
+  border-color: #343a19;
+  transform: translateY(-2px);
+}
+
+.moments-lock-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.confirmation-passes {
+  font-family: 'The Seasons', serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 300;
+  color: white;
+  margin: 15px 0;
+}
+
+.confirmation-subtitle {
+  font-family: 'The Seasons', serif;
+  font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+  font-weight: 400;
+  color: white;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.confirmation-cta {
+  font-family: 'The Seasons', serif;
+  font-size: clamp(1rem, 2vw, 1.3rem);
+  font-weight: 400;
+  color: white;
+  letter-spacing: 2px;
+  margin: 10px 0 30px;
+  text-transform: uppercase;
+}
+
+.confirmation-note {
+  font-family: 'Montserrat', sans-serif;
+  font-size: clamp(0.85rem, 1.6vw, 1rem);
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.8);
+  margin-top: 40px;
+  line-height: 1.6;
+  font-style: italic;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 768px) {
+  .hero-section {
+    height: 100vh;
+  }
+
+  .change-guest-btn {
+    bottom: 20px;
+    left: 20px;
+    padding: 10px 20px;
+    font-size: 0.7rem;
+  }
+
+  .countdown-card {
+    padding: 30px 20px;
+  }
+
+  .schedule-timeline {
+    padding-left: 16px;
+    gap: 20px;
+  }
+
+  .schedule-line {
+    left: 16px;
+  }
+
+  .schedule-item {
+    grid-template-columns: 60px 1fr;
+    column-gap: 14px;
+  }
+
+  .schedule-icon {
+    width: 44px;
+    height: 44px;
+  }
+
+  .schedule-icon img {
+    width: 28px;
+    height: 28px;
+  }
+
+  .photos-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .date-day-label::before,
+  .date-day-label::after,
+  .date-month-label::before,
+  .date-month-label::after {
+    max-width: 80px;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .photos-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .date-day-label::before,
+  .date-day-label::after,
+  .date-month-label::before,
+  .date-month-label::after {
+    max-width: 150px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .date-day-label::before,
+  .date-day-label::after,
+  .date-month-label::before,
+  .date-month-label::after {
+    max-width: 180px;
+  }
+}

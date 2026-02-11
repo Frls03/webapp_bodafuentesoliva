@@ -7,6 +7,7 @@ const PasswordGate = ({ onAuthenticated }) => {
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const authStorageKey = 'inviteNewAuth';
 
   const handlePasswordSubmit = async (e) => {
     e.preventDefault();
@@ -18,6 +19,10 @@ const PasswordGate = ({ onAuthenticated }) => {
 
       if (guest) {
         sessionStorage.setItem('guestData', JSON.stringify(guest));
+        localStorage.setItem(
+          authStorageKey,
+          JSON.stringify({ guest, lastActive: Date.now() })
+        );
         onAuthenticated(guest);
         setPassword('');
       } else {

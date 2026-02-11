@@ -1,10 +1,12 @@
 /* Confirmación de Asistencia */
 
 .attendance-confirmation {
-  background: #ffffff;
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(12px);
   padding: 30px;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
   max-width: 500px;
   margin: 0 auto;
 }
@@ -12,7 +14,7 @@
 .attendance-title {
   font-family: 'Crimson Text', serif;
   font-size: 1.6rem;
-  color: #42481d;
+  color: #f7f4ef;
   text-align: center;
   margin-bottom: 20px;
 }
@@ -38,9 +40,9 @@
   padding: 12px 24px;
   font-family: 'Crimson Text', serif;
   font-size: 1rem;
-  border: 2px solid #687037;
-  background: white;
-  color: #42481d;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  background: rgba(0, 0, 0, 0.25);
+  color: #f7f4ef;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -90,7 +92,7 @@
 .attendee-count label {
   font-family: 'Crimson Text', serif;
   font-size: 1.1rem;
-  color: #42481d;
+  color: #f7f4ef;
   font-weight: 600;
 }
 
@@ -98,24 +100,24 @@
   padding: 12px;
   font-family: 'Crimson Text', serif;
   font-size: 1rem;
-  border: 2px solid #687037;
+  border: 1px solid rgba(255, 255, 255, 0.6);
   border-radius: 8px;
-  background: white;
-  color: #42481d;
+  background: rgba(0, 0, 0, 0.35);
+  color: #f7f4ef;
   cursor: pointer;
   transition: border-color 0.3s ease;
 }
 
 .count-select:focus {
   outline: none;
-  border-color: #42481d;
+  border-color: rgba(255, 255, 255, 0.8);
 }
 
 .plus-one-note {
   font-family: 'Crimson Text', serif;
   font-size: 0.95rem;
-  color: #687037;
-  background: #f0f4e8;
+  color: #f7f4ef;
+  background: rgba(0, 0, 0, 0.35);
   padding: 8px 12px;
   border-radius: 6px;
   margin: 0;
@@ -131,7 +133,7 @@
 .attendance-notes label {
   font-family: 'Crimson Text', serif;
   font-size: 1rem;
-  color: #42481d;
+  color: #f7f4ef;
   font-weight: 600;
 }
 
@@ -139,22 +141,22 @@
   padding: 10px;
   font-family: 'Crimson Text', serif;
   font-size: 0.95rem;
-  color: black;
-  border: 2px solid #687037;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.6);
   border-radius: 8px;
   resize: vertical;
   transition: border-color 0.3s ease;
   min-height: 60px;
-  background: #ffffff;
+  background: rgba(0, 0, 0, 0.35);
 }
 
 .notes-textarea:focus {
   outline: none;
-  border-color: #42481d;
+  border-color: rgba(255, 255, 255, 0.8);
 }
 
 .notes-textarea::placeholder {
-  color: #000000;
+  color: rgba(255, 255, 255, 0.7);
   font-style: italic;
 }
 
@@ -169,15 +171,15 @@
 }
 
 .attendance-message.success {
-  background: #e8f5e9;
-  color: #2e7d32;
-  border: 1px solid #4caf50;
+  background: rgba(76, 175, 80, 0.2);
+  color: #e8f5e9;
+  border: 1px solid rgba(76, 175, 80, 0.6);
 }
 
 .attendance-message.error {
-  background: #ffebee;
-  color: #c62828;
-  border: 1px solid #f44336;
+  background: rgba(244, 67, 54, 0.2);
+  color: #ffebee;
+  border: 1px solid rgba(244, 67, 54, 0.6);
 }
 
 .submit-attendance-btn {
@@ -185,9 +187,9 @@
   font-family: 'Crimson Text', serif;
   font-size: 1.1rem;
   font-weight: 600;
-  background: #687037;
+  background: #434a21;
   color: white;
-  border: none;
+  border: 1px solid #434a21;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -195,13 +197,13 @@
 }
 
 .submit-attendance-btn:hover:not(:disabled) {
-  background: #42481d;
+  background: #343a19;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(66, 72, 29, 0.3);
 }
 
 .submit-attendance-btn:disabled {
-  background: #ccc;
+  background: rgba(255, 255, 255, 0.2);
   cursor: not-allowed;
   opacity: 0.6;
 }
@@ -210,7 +212,7 @@
   text-align: center;
   font-family: 'Crimson Text', serif;
   font-size: 0.9rem;
-  color: #687037;
+  color: rgba(255, 255, 255, 0.75);
   font-style: italic;
   margin-top: -10px;
 }

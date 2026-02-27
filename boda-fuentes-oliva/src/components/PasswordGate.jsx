@@ -39,7 +39,7 @@ const PasswordGate = ({ onAuthenticated }) => {
   };
 
   return (
-    <div className="password-gate">
+    <div className="password-gate notranslate" translate="no">
       <div className="password-gate-overlay"></div>
       <div className="password-gate-content">
         <div className="password-gate-header">

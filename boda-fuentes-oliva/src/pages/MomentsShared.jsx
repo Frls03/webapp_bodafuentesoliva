@@ -101,7 +101,7 @@ const MomentsShared = () => {
 
   if (!isWeddingDay) {
     return (
-      <div className="moments-locked-page">
+      <div className="moments-locked-page notranslate" translate="no">
         <div className="moments-locked-card">
           <h1>Momentos compartidos</h1>
           <p>Este espacio estará disponible el día de la boda.</p>
@@ -114,7 +114,7 @@ const MomentsShared = () => {
   }
 
   return (
-    <div className="moments-page" translate="no">
+    <div className="moments-page notranslate" translate="no">
       <header className="moments-hero">
         <h1>Momentos compartidos</h1>
         <p>Comparte tus fotos y mensajes del gran día con nosotros.</p>

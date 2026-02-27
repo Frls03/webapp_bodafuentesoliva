@@ -92,7 +92,7 @@ const InviteNew = () => {
 
   // Countdown para la boda (3 de mayo 2026)
   const calculateTimeLeft = () => {
-    const difference = +new Date('2026-05-03T17:00:00') - +new Date();
+    const difference = +new Date('2026-05-03T14:30:00') - +new Date();
     
     if (difference > 0) {
       return {
@@ -221,6 +221,12 @@ const InviteNew = () => {
     navigate('/moments');
   };
 
+  const handleOpenWaze = () => {
+    const address = 'Casa Blanca Glamping, Km 38.5 ruta nacional 10';
+    const wazeUrl = `https://waze.com/ul?q=${encodeURIComponent(address)}&navigate=yes`;
+    window.open(wazeUrl, '_blank', 'noopener,noreferrer');
+  };
+
   if (!isAuthenticated) {
     return <PasswordGate onAuthenticated={handleAuthenticated} />;
   }
@@ -230,7 +236,7 @@ const InviteNew = () => {
       {/* MÓDULO 1: Hero con nombres */}
       <section
         className="hero-section module-animate"
-        style={{ backgroundImage: 'url(/images/portada.jpg)', animationDelay: '0.05s' }}
+        style={{ backgroundImage: 'url(/images/regalos1.jpeg)', animationDelay: '0.05s' }}
       >
         <div className="hero-overlay"></div>
         <div className="hero-content hero-animate">
@@ -297,7 +303,9 @@ const InviteNew = () => {
                     <p className="schedule-item-location">{event.location}</p>
                   ) : null}
                   {event.showButton ? (
-                    <button className="schedule-item-button">CÓMO LLEGAR</button>
+                    <button className="schedule-item-button" onClick={handleOpenWaze}>
+                      CÓMO LLEGAR
+                    </button>
                   ) : null}
                 </div>
               </div>
@@ -316,7 +324,7 @@ const InviteNew = () => {
             <img src="/images/mosaico2.jpg" alt="Pareja 2" />
           </div>
           <div className="photo-frame">
-            <img src="/images/mosaico3.jpg" alt="Pareja 3" />
+            <img src="/images/invi2.jpeg" alt="Pareja 3" />
           </div>
         </div>
       </section>
@@ -324,7 +332,7 @@ const InviteNew = () => {
 
             {/* MÓDULO 5: Regalos */}
       <section className="gifts-section module-animate" style={{ animationDelay: '0.25s' }}>
-        <div className="gifts-background" style={{ backgroundImage: 'url(/images/regalos1.jpeg)' }}></div>
+        <div className="gifts-background" style={{ backgroundImage: 'url(/images/mosaico3.jpg)' }}></div>
         <div className="gifts-content">
             <img className="gifts-icon" src="/icons/regalos.png" alt="" aria-hidden="true" />
           <div className="gifts-options">

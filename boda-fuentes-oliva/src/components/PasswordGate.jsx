@@ -43,13 +43,13 @@ const PasswordGate = ({ onAuthenticated }) => {
       <div className="password-gate-overlay"></div>
       <div className="password-gate-content">
         <div className="password-gate-header">
-          <h1 className="gate-title">Bienvenido a nuestra boda</h1>
+          <h1 className="gate-title">¡Nos casamos!</h1>
           <div className="couple-names-gate">
             <span className="bride-name">Majito</span>
             <span className="ampersand">&</span>
             <span className="groom-name">Pablo</span>
           </div>
-          <p className="gate-subtitle">Ingresa tu contraseña para ver tu invitación personalizada</p>
+          <p className="gate-subtitle">Creemos que lo mejor de la felicidad es cuando se comparte con las personas que amas.</p>
         </div>
 
         <form onSubmit={handlePasswordSubmit} className="password-form">
@@ -58,7 +58,7 @@ const PasswordGate = ({ onAuthenticated }) => {
               type={showPassword ? 'text' : 'password'}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Contraseña de tu invitación"
+              placeholder="Ingresa tu contraseña"
               className={`password-input ${error ? 'error' : ''}`}
               autoComplete="off"
               autoFocus
@@ -95,7 +95,7 @@ const PasswordGate = ({ onAuthenticated }) => {
         <div className="decorative-element">
           <div className="heart-divider">
             <div className="line"></div>
-            <span className="heart">❤️</span>
+            <span className="heart" aria-hidden="true"></span>
             <div className="line"></div>
           </div>
         </div>

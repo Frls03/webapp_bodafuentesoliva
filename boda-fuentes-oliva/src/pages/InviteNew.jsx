@@ -10,40 +10,52 @@ const InviteNew = () => {
   const [guestData, setGuestData] = useState(null);
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
   const authStorageKey = 'inviteNewAuth';
-  const inactivityMs = 2 * 60 * 1000;
+  const inactivityMs = 3 * 60 * 1000;
   const isWeddingDay = true;
 
   const scheduleEvents = [
     {
-      time: '2:00 p.m.',
-      title: 'RECEPCIÓN',
-      location: 'Casa Blanca Glamping, Milpas Altas',
-      icon: '/icons/arco.png',
-      showButton: true,
-    },
-    {
-      time: '2:45 p.m.',
+      time: '2:30 p.m.',
       title: 'CEREMONIA',
       location: 'Casa Blanca Glamping, Milpas Altas',
-      icon: '/icons/anillos.png',
+      icon: '/icons/anillos1.png',
       showButton: true,
-    },
-    {
-      time: '3:20 p.m.',
-      title: 'FOTOS CON LOS NOVIOS',
-      icon: '/icons/camara.png',
-      showButton: false,
-    },
-    {
-      time: '3:45 p.m.',
-      title: 'BRINDIS',
-      icon: '/icons/brindis.png',
-      showButton: false,
     },
     {
       time: '4:00 p.m.',
-      title: 'PRIMER BAILE',
-      icon: '/icons/baile.png',
+      title: 'CÓCTEL',
+      location: 'Casa Blanca Glamping, Milpas Altas',
+      icon: '/icons/cocktail.png',
+      showButton: false,
+    },
+    {
+      time: '5:00 p.m.',
+      title: 'ENTRADA DE NOVIOS',
+      icon: '/icons/entrada.png',
+      showButton: false,
+    },
+    {
+      time: '5:20 p.m.',
+      title: 'BRINDIS',
+      icon: '/icons/brindis1.png',
+      showButton: false,
+    },
+    {
+      time: '5:25 p.m.',
+      title: 'CENA',
+      icon: '/icons/cena1.png',
+      showButton: false,
+    },
+    {
+      time: '6:00 p.m.',
+      title: 'FOTOS CON LOS NOVIOS',
+      icon: '/icons/camara1.png',
+      showButton: false,
+    },
+    {
+      time: '6:30 p.m.',
+      title: 'PARTY',
+      icon: '/icons/party.png',
       showButton: false,
     },
   ];
@@ -161,6 +173,35 @@ const InviteNew = () => {
     };
   }, [isAuthenticated, guestData]);
 
+  useEffect(() => {
+    const elements = Array.from(document.querySelectorAll('.module-animate'));
+    if (elements.length === 0) return undefined;
+
+    if (!('IntersectionObserver' in window)) {
+      elements.forEach((el) => el.classList.add('is-visible'));
+      return undefined;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15, rootMargin: '0px 0px -10% 0px' }
+    );
+
+    elements.forEach((el) => {
+      el.classList.remove('is-visible');
+      observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
   const handleAuthenticated = (data) => {
     setGuestData(data);
     setIsAuthenticated(true);
@@ -187,11 +228,19 @@ const InviteNew = () => {
   return (
     <div className="invite-new notranslate" translate="no">
       {/* MÓDULO 1: Hero con nombres */}
-      <section className="hero-section" style={{ backgroundImage: 'url(/images/AJ1_2147.jpg)' }}>
+      <section
+        className="hero-section module-animate"
+        style={{ backgroundImage: 'url(/images/portada.jpg)', animationDelay: '0.05s' }}
+      >
         <div className="hero-overlay"></div>
-        <div className="hero-content">
+        <div className="hero-content hero-animate">
           <h1 className="hero-title"><span>¡</span><span>NOS CASAMOS</span><span>!</span></h1>
           <h2 className="hero-names">{formatGuestNames(guestData?.names || [])}</h2>
+          <p className="hero-message">
+            Nuestro amor tiene una fecha
+            especial y queremos celebrar
+            contigo
+          </p>
           <p className="hero-date">03 . 05 . 2026</p>
         </div>
         <button className="change-guest-btn" onClick={handleChangeGuest}>
@@ -200,7 +249,7 @@ const InviteNew = () => {
       </section>
 
       {/* MÓDULO 2: Countdown */}
-      <section className="countdown-section">
+      <section className="countdown-section module-animate" style={{ animationDelay: '0.1s' }}>
         <div className="countdown-background"></div>
         <div className="countdown-card">
           <h2 className="countdown-title">FALTAN:</h2>
@@ -222,25 +271,12 @@ const InviteNew = () => {
               <span className="countdown-label">SEGUNDOS</span>
             </div>
           </div>
-
-          <div className="countdown-message">
-            <p>Nuestra historia se construye con momentos y este es el más importante de nuestra vida.</p>
-            <p className="countdown-invitation">
-              TE INVITAMOS A COMPARTIR CON NOSOTROS EL INICIO DE ESTA NUEVA ETAPA JUNTOS.
-            </p>
-          </div>
-
-          <div className="wedding-date-display">
-            <div className="date-day-label">DOMINGO</div>
-            <div className="date-day-number">03</div>
-            <div className="date-month-label">MAYO</div>
-          </div>
         </div>
       </section>
 
       {/* MÓDULO 3: Cronograma */}
-      <section className="schedule-section">
-        <div className="schedule-background" style={{ backgroundImage: 'url(/images/JOK_5880.jpg)' }}></div>
+      <section className="schedule-section module-animate" style={{ animationDelay: '0.15s' }}>
+        <div className="schedule-background" style={{ backgroundImage: 'url(/images/invi1.jpeg)' }}></div>
         <div className="schedule-content">
           <h2 className="schedule-title">Cronograma</h2>
           <div className="schedule-timeline">
@@ -248,7 +284,11 @@ const InviteNew = () => {
             {scheduleEvents.map((event) => (
               <div className="schedule-item" key={`${event.title}-${event.time}`}>
                 <div className="schedule-icon">
-                  <img src={event.icon} alt={event.title} />
+                  <img
+                    src={event.icon}
+                    alt={event.title}
+                    className={`schedule-icon-img${event.icon.includes('camara1') ? ' icon-camera' : ''}`}
+                  />
                 </div>
                 <div className="schedule-details">
                   <h3 className="schedule-item-title">{event.title}</h3>
@@ -267,22 +307,47 @@ const InviteNew = () => {
       </section>
 
       {/* MÓDULO 4: Poster con 3 fotos */}
-      <section className="photos-section">
+      <section className="photos-section module-animate" style={{ animationDelay: '0.2s' }}>
         <div className="photos-grid">
           <div className="photo-frame">
-            <img src="/images/foto inicial.jpg" alt="Pareja 1" />
+            <img src="/images/mosaico1.jpg" alt="Pareja 1" />
           </div>
           <div className="photo-frame">
-            <img src="/images/foto extra.jpg" alt="Pareja 2" />
+            <img src="/images/mosaico2.jpg" alt="Pareja 2" />
           </div>
           <div className="photo-frame">
-            <img src="/images/JOK_5880.jpg" alt="Pareja 3" />
+            <img src="/images/mosaico3.jpg" alt="Pareja 3" />
           </div>
         </div>
       </section>
 
-      {/* MÓDULO 5: Dress Code */}
-      <section className="dresscode-section">
+
+            {/* MÓDULO 5: Regalos */}
+      <section className="gifts-section module-animate" style={{ animationDelay: '0.25s' }}>
+        <div className="gifts-background" style={{ backgroundImage: 'url(/images/regalos1.jpeg)' }}></div>
+        <div className="gifts-content">
+            <img className="gifts-icon" src="/icons/regalos.png" alt="" aria-hidden="true" />
+          <div className="gifts-options">
+            <a
+              className="gifts-link-button"
+              href="https://www.cemaco.com/list/bodafuentesoliva"
+              target="_blank"
+              rel="noreferrer"
+            >
+              LISTA DE REGALOS
+            </a>
+          </div>
+          <p className="gifts-message">
+            Gracias por acompanarnos en este dia tan especial. Si deseas hacernos un obsequio, esta es nuestra mesa de regalos.
+          </p>
+          <p className="gifts-note">
+            Ayudanos dejando tu regalo en el establecimiento, nosotros pasaremos por ellos.
+          </p>
+        </div>
+      </section>
+
+      {/* MÓDULO 6: Dress Code */}
+      <section className="dresscode-section module-animate" style={{ animationDelay: '0.3s' }}>
         <h2 className="dresscode-title">DRESS CODE</h2>
         <p className="dresscode-subtitle">ELEGANTE</p>
         
@@ -292,45 +357,33 @@ const InviteNew = () => {
         </div>
 
         <div className="color-palette">
-          <div className="color-circle" style={{ backgroundColor: '#000000' }}></div>
-          <div className="color-circle" style={{ backgroundColor: '#4A2C2A' }}></div>
-          <div className="color-circle" style={{ backgroundColor: '#6B4423' }}></div>
-          <div className="color-circle" style={{ backgroundColor: '#8B4513' }}></div>
-          <div className="color-circle" style={{ backgroundColor: '#A0522D' }}></div>
-          <div className="color-circle" style={{ backgroundColor: '#4A5D6F' }}></div>
-          <div className="color-circle" style={{ backgroundColor: '#8B9467' }}></div>
-          <div className="color-circle" style={{ backgroundColor: '#A8A878' }}></div>
+          <div className="color-circle" style={{ backgroundColor: '#b52217' }}></div>
+          <div className="color-circle" style={{ backgroundColor: '#ff5757' }}></div>
+          <div className="color-circle" style={{ backgroundColor: '#5ce1e6' }}></div>
+          <div className="color-circle" style={{ backgroundColor: '#5170ff' }}></div>
+          <div className="color-circle" style={{ backgroundColor: '#884a22' }}></div>
+          <div className="color-circle" style={{ backgroundColor: '#d6641a' }}></div>
+          <div className="color-circle" style={{ backgroundColor: '#d61a69' }}></div>
+          <div className="color-circle" style={{ backgroundColor: '#ffc721' }}></div>
         </div>
 
         <p className="dresscode-note">
           Los colores blanco y similares (como perla, beige o champagne) están reservados solo para la novia
         </p>
+        <a
+          className="dresscode-link"
+          href="https://pin.it/47xY85C5k"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Inspo Outfit
+        </a>
       </section>
 
-      {/* MÓDULO 6: Regalos */}
-      <section className="gifts-section">
-        <div className="gifts-background" style={{ backgroundImage: 'url(/images/foto%20extra.jpg)' }}></div>
-        <div className="gifts-content">
-          <h2 className="gifts-title">REGALOS</h2>
-          <p className="gifts-message">
-            Tu presencia es lo más importante para nosotros en este día y si desean enviarnos un obsequio, te brindamos las siguientes opciones:
-          </p>
-          <p className="gifts-link-text"></p>
-          <div className="gifts-options">
-            <a
-              className="gifts-link-button"
-              href="https://www.cemaco.com/?utnm_source=Google_Ads&utm_medium=Search&utm_campaign=2023_Cemaco_Brand-Search&utm_content=CemacoAds_Brand-Search-Ads&gad_source=1&gad_campaignid=12955798310&gbraid=0AAAAADhhIfz-T1ooun0LbH3DS4ou1cYW_&gclid=Cj0KCQiA7rDMBhCjARIsAGDBuEDHnwTeRbbJj5wCOQOFUbeIn5OdwcqYaEUjLlKofYZtoS8yYWVHJqAaAmOjEALw_wcB"
-              target="_blank"
-              rel="noreferrer"
-            >
-              VER REGALOS
-            </a>
-          </div>
-        </div>
-      </section>
+
 
       {/* MÓDULO 7: Confirmación de asistencia */}
-      <section className="confirmation-section">
+      <section className="confirmation-section module-animate" style={{ animationDelay: '0.35s' }}>
         <div className="confirmation-card">
           <p className="confirmation-cta">CONFIRMA TU ASISTENCIA</p>
           
@@ -342,7 +395,7 @@ const InviteNew = () => {
         </div>
       </section>
 
-      <section className="moments-lock-section">
+      <section className="moments-lock-section module-animate" style={{ animationDelay: '0.4s' }}>
         <div className="moments-lock-card">
           <h2 className="moments-lock-title">Momentos compartidos</h2>
           <p className="moments-lock-text">

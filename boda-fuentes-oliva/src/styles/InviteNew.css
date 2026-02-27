@@ -43,6 +43,42 @@
   overflow-x: hidden;
 }
 
+.module-animate {
+  opacity: 1;
+  transform: none;
+}
+
+.module-animate.is-visible {
+  opacity: 0;
+  transform: translateY(60px) scale(0.98);
+  animation: moduleFadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes moduleFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(60px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .module-animate {
+    animation: none;
+    transition: none;
+    opacity: 1;
+    transform: none;
+  }
+  .module-animate.is-visible {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
 /* MÓDULO 1: HERO CON NOMBRES */
 
 .hero-section {
@@ -79,6 +115,39 @@
   text-align: center;
   color: white;
   padding: 20px;
+}
+
+.hero-animate .hero-title,
+.hero-animate .hero-names,
+.hero-animate .hero-message,
+.hero-animate .hero-date {
+  opacity: 0;
+  animation: heroFadeIn 1.5s ease forwards;
+}
+
+.hero-animate .hero-title {
+  animation-delay: 0.2s;
+}
+
+.hero-animate .hero-names {
+  animation-delay: 0.5s;
+}
+
+.hero-animate .hero-message {
+  animation-delay: 0.65s;
+}
+
+.hero-animate .hero-date {
+  animation-delay: 0.7s;
+}
+
+@keyframes heroFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @media (max-width: 768px) {
@@ -162,7 +231,7 @@
 
 .countdown-section {
   position: relative;
-  min-height: 100vh;
+  min-height: 50vh;
   width: 100%;
   display: flex;
   align-items: center;
@@ -454,11 +523,16 @@
   z-index: 1;
 }
 
-.schedule-icon img {
-  width: 36px;
-  height: 36px;
+.schedule-icon-img {
+  width: 44px;
+  height: 44px;
   object-fit: contain;
   filter: brightness(0) invert(1) drop-shadow(0 1px 2px rgba(0, 0, 0, 0.35));
+}
+
+.schedule-icon-img.icon-camera {
+  width: 36px;
+  height: 36px;
 }
 
 .schedule-details {
@@ -543,7 +617,6 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: grayscale(50%);
   transition: filter 0.3s ease;
 }
 
@@ -570,6 +643,30 @@
   text-transform: uppercase;
 }
 
+
+.dresscode-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px auto 0;
+  padding: 12px 28px;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  background: transparent;
+  color: #000000;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.dresscode-link:hover {
+  background: #ffffff;
+  border-color: rgba(0, 0, 0, 0.3);
+  transform: translateY(-2px);
+}
 .dresscode-subtitle {
   font-family: 'Crimson Text', serif;
   font-size: clamp(1.2rem, 2.5vw, 1.8rem);
@@ -616,8 +713,8 @@
 
 .dresscode-note {
   font-family: 'Crimson Text', serif;
-  font-size: clamp(0.8rem, 1.5vw, 0.95rem);
-  font-weight: 300;
+  font-size: clamp(0.9rem, 1.5vw, 0.95rem);
+  font-weight: 700;
   font-style: italic bold;
   color: #000000;
   max-width: 600px;
@@ -648,19 +745,20 @@
   background-image: url('/images/couple-1.jpg');
   background-size: cover;
   background-position: center 35%;
-  filter: grayscale(100%) brightness(0.6);
+  /*filter: grayscale(100%) brightness(0.6);*/
   z-index: 0;
 }
 
 .gifts-content {
   position: relative;
   z-index: 1;
-  background: transparent;
-  border-radius: 0;
-  padding: clamp(30px, 5vw, 60px) 0 0;
-  max-width: 700px;
-  width: 90%;
+  background: #efefef;
+  border-radius: 26px;
+  padding: clamp(28px, 5vw, 48px) clamp(24px, 5vw, 50px);
+  max-width: 760px;
+  width: min(92%, 760px);
   text-align: center;
+  margin-top: clamp(-24px, -3vw, -12px);
 }
 
 @media (max-width: 768px) {
@@ -687,55 +785,64 @@
 
   .gifts-background {
     width: 100vw;
-    height: clamp(260px, 26vw, 420px);
+    height: auto;
+    aspect-ratio: 6048 / 4024;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center top;
     margin-left: calc(50% - 50vw);
   }
 }
 
-.gifts-title {
-  font-family: 'The Seasons', serif;
-  font-size: clamp(2rem, 4vw, 3rem);
-  font-weight: 300;
-  color: #5a3e36;
-  letter-spacing: 3px;
-  margin-bottom: 30px;
-  text-transform: uppercase;
-}
-
 .gifts-message {
-  font-family: 'Crimson Text', serif;
-  font-size: clamp(0.95rem, 2vw, 1.15rem);
-  font-weight: 300;
-  text-align: justify;
-  color: #555;
-  line-height: 1.8;
-  margin-bottom: 40px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: clamp(0.95rem, 2.6vw, 1.3rem);
+  font-weight: 200;
+  text-align: center;
+  color: #333;
+  line-height: 1.6;
+  margin: 18px auto 18px;
+  max-width: 640px;
 }
 
-.gifts-link-text {
+.gifts-note {
   font-family: 'Montserrat', sans-serif;
-  font-size: clamp(0.95rem, 2vw, 1.05rem);
-  color: #5a3e36;
-  margin-bottom: 20px;
+  font-size: clamp(1.05rem, 2.6vw, 1.3rem);
+  font-weight: 1000;
+  color: #333;
+  line-height: 1.6;
+  margin: 0 auto;
+  max-width: 680px;
+}
+
+.gifts-icon {
+  width: 92px;
+  height: 92px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto 12px;
+  filter: brightness(0) saturate(0) opacity(0.7);
 }
 
 .gifts-options {
   display: flex;
   justify-content: center;
+  margin-bottom: 16px;
 }
 
 .gifts-link-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 12px 28px;
+  padding: 14px 32px;
   border-radius: 999px;
   border: 1px solid #434a21;
   background: #434a21;
   color: #ffffff;
   font-family: 'Montserrat', sans-serif;
-  font-size: 0.85rem;
-  letter-spacing: 1px;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 1.2px;
   text-transform: uppercase;
   text-decoration: none;
   transition: all 0.3s ease;
@@ -744,6 +851,7 @@
 .gifts-link-button:hover {
   background: #343a19;
   border-color: #343a19;
+  color: #ffffff;
   transform: translateY(-2px);
 }
 
@@ -768,11 +876,11 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url('/images/AJ1_2147.jpg');
+  background-image: url('/images/fondo1.jpeg');
   background-size: cover;
   background-position: center;
   opacity: 1;
-  filter: grayscale(100%);
+  /*filter: grayscale(100%);*/
   z-index: 0;
 }
 
@@ -952,7 +1060,13 @@
     height: 44px;
   }
 
-  .schedule-icon img {
+  .schedule-icon-img {
+    width: 42px;
+    height: 42px;
+    filter: brightness(0) invert(1) drop-shadow(0 1px 2px rgba(0, 0, 0, 0.35));
+  }
+
+  .schedule-icon-img.icon-camera {
     width: 28px;
     height: 28px;
   }

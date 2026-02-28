@@ -346,7 +346,7 @@ const InviteNew = () => {
             </a>
           </div>
           <p className="gifts-message">
-            Gracias por acompanarnos en este dia tan especial. Si deseas hacernos un obsequio, esta es nuestra mesa de regalos.
+            Gracias por acompañarnos en este dia tan especial. Si deseas hacernos un obsequio, esta es nuestra mesa de regalos.
           </p>
           <p className="gifts-note">
             Ayudanos dejando tu regalo en el establecimiento, nosotros pasaremos por ellos.

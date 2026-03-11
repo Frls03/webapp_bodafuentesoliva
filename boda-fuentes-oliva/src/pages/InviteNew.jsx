@@ -227,6 +227,10 @@ const InviteNew = () => {
     window.open(wazeUrl, '_blank', 'noopener,noreferrer');
   };
 
+  const heroMessage =
+    String(guestData?.mesage || guestData?.message || '').trim() ||
+    'Nuestro amor tiene una fecha especial y queremos celebrar contigo';
+
   if (!isAuthenticated) {
     return <PasswordGate onAuthenticated={handleAuthenticated} />;
   }
@@ -243,9 +247,7 @@ const InviteNew = () => {
           <h1 className="hero-title"><span>¡</span><span>NOS CASAMOS</span><span>!</span></h1>
           <h2 className="hero-names">{formatGuestNames(guestData?.names || [])}</h2>
           <p className="hero-message">
-            Nuestro amor tiene una fecha
-            especial y queremos celebrar
-            contigo
+            {heroMessage}
           </p>
           <p className="hero-date">03 . 05 . 2026</p>
         </div>

@@ -24,10 +24,32 @@ console.log(`🔧 Modo: ${isDev ? 'DESARROLLO' : 'PRODUCCIÓN'} | APIs: ${USE_AP
 
 export const getGuestByPassword = async (password) => {
   try {
+    const passwordValidation = validatePassword(password);
+    if (!passwordValidation.isValid) {
+      console.error('Invalid guest password format:', passwordValidation.error);
+      return null;
+    }
+
+    const normalizedPassword = passwordValidation.sanitized.toLowerCase();
+
+    if (USE_API) {
+      const response = await fetch('/api/validate-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: normalizedPassword })
+      });
+
+      if (!response.ok) {
+        return null;
+      }
+
+      return await response.json();
+    }
+
     const { data, error } = await supabase
       .from('guests')
       .select('*')
-      .eq('password', password)
+      .eq('password', normalizedPassword)
       .single();
 
     if (error) {
@@ -178,6 +200,13 @@ export const getAttendanceStats = async () => {
 // Función para enviar confirmación del Save The Date (sin autenticación)
 export const submitSaveTheDateRSVP = async (fullName, willAttend, notes = '') => {
   try {
+    if (typeof willAttend !== 'boolean') {
+      return {
+        success: false,
+        error: 'La respuesta de asistencia no es válida'
+      };
+    }
+
     // Validación en el backend
     const nameValidation = validateName(fullName);
     const notesValidation = validateNotes(notes);

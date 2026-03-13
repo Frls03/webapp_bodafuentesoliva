@@ -1,6 +1,7 @@
 // Vercel Serverless Function - Admin Login
 // Este código se ejecuta en el servidor, NO en el navegador
 import { createClient } from '@supabase/supabase-js';
+import { checkRateLimit, applyRateLimitHeaders } from './_lib/rateLimit';
 
 export default async function handler(req, res) {
   // Solo permitir POST
@@ -29,17 +30,40 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Username and password required' });
   }
 
+  const normalizedUsername = String(username).trim();
+  const normalizedPassword = String(password).trim();
+
   // Validación de longitud (prevenir DoS)
-  if (username.length > 50 || password.length > 50) {
+  if (normalizedUsername.length > 50 || normalizedPassword.length > 50) {
     return res.status(400).json({ error: 'Invalid credentials' });
+  }
+
+  if (!/^[a-zA-Z0-9_]+$/.test(normalizedUsername)) {
+    return res.status(400).json({ error: 'Invalid credentials' });
+  }
+
+  const RATE_LIMIT = 8;
+  const WINDOW_MS = 5 * 60 * 1000;
+  const rateLimitResult = checkRateLimit({
+    req,
+    keyPrefix: 'admin-login',
+    limit: RATE_LIMIT,
+    windowMs: WINDOW_MS,
+    identifier: normalizedUsername.toLowerCase()
+  });
+
+  applyRateLimitHeaders(res, rateLimitResult, RATE_LIMIT);
+
+  if (!rateLimitResult.allowed) {
+    return res.status(429).json({ success: false, error: 'Too many attempts. Try again later.' });
   }
 
   try {
     const { data, error } = await supabase
       .from('admins')
       .select('id, username')
-      .eq('username', username)
-      .eq('password', password)
+      .eq('username', normalizedUsername)
+      .eq('password', normalizedPassword)
       .single();
 
     if (error || !data) {

@@ -1,6 +1,5 @@
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Navigation from './components/Navigation';
-import SaveTheDate from './pages/SaveTheDate';
 // import Invite from './pages/Invite'; // Plantilla anterior (comentada)
 import InviteNew from './pages/InviteNew'; // Nueva página de invitación
 import MomentsShared from './pages/MomentsShared';
@@ -9,7 +8,7 @@ import './App.css';
 
 function App() {
   const location = useLocation();
-  const isInvitePage = location.pathname === '/invite';
+  const isInvitePage = ['/invite', '/home', '/savethedate', '/'].includes(location.pathname);
   const isAdminPage = location.pathname === '/admin';
   
   // Puedes cambiar esto a false para ocultar el enlace de invitación
@@ -22,9 +21,9 @@ function App() {
       
       <main className={`main-content ${isInvitePage ? 'invite-page' : ''}`}>
         <Routes>
-          <Route path="/" element={<Navigate to="/home" replace />} />
-          <Route path="/home" element={<SaveTheDate />} />
-          <Route path="/savethedate" element={<SaveTheDate />} />
+          <Route path="/" element={<Navigate to="/invite" replace />} />
+          <Route path="/home" element={<Navigate to="/invite" replace />} />
+          <Route path="/savethedate" element={<Navigate to="/invite" replace />} />
           {/* <Route path="/invite" element={<Invite />} /> */} {/* Plantilla anterior */}
           <Route path="/invite" element={<InviteNew />} /> {/* Nueva invitación */}
           <Route path="/moments" element={<MomentsShared />} />

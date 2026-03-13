@@ -1,6 +1,7 @@
 // Vercel Serverless Function - Manage Tables
 // CRUD completo para mesas y asignaciones
 import { createClient } from '@supabase/supabase-js';
+import { checkRateLimit, applyRateLimitHeaders } from './_lib/rateLimit';
 
 export default async function handler(req, res) {
   // CORS headers
@@ -17,6 +18,21 @@ export default async function handler(req, res) {
     process.env.SUPABASE_URL,
     process.env.SUPABASE_SERVICE_KEY
   );
+
+  const RATE_LIMIT = 40;
+  const WINDOW_MS = 60 * 1000;
+  const rateLimitResult = checkRateLimit({
+    req,
+    keyPrefix: 'manage-tables',
+    limit: RATE_LIMIT,
+    windowMs: WINDOW_MS
+  });
+
+  applyRateLimitHeaders(res, rateLimitResult, RATE_LIMIT);
+
+  if (!rateLimitResult.allowed) {
+    return res.status(429).json({ error: 'Too many requests. Try again soon.' });
+  }
 
   try {
     // ========================================

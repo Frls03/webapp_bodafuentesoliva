@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import '../styles/PasswordGate.css';
 import { getGuestByPassword } from '../lib/supabase';
+import { validatePassword } from '../utils/validation';
 
 const PasswordGate = ({ onAuthenticated }) => {
   const [password, setPassword] = useState('');
@@ -15,7 +16,14 @@ const PasswordGate = ({ onAuthenticated }) => {
     setLoading(true);
 
     try {
-      const normalizedPassword = password.trim().toLowerCase();
+      const passwordValidation = validatePassword(password);
+      if (!passwordValidation.isValid) {
+        setError(passwordValidation.error);
+        setLoading(false);
+        return;
+      }
+
+      const normalizedPassword = passwordValidation.sanitized.toLowerCase();
       const guest = await getGuestByPassword(normalizedPassword);
 
       if (guest) {

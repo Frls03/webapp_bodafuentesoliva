@@ -1,7 +1,6 @@
 // Vercel Serverless Function - Get Stats
 // Obtiene estadísticas de asistencia y Save The Date
 import { createClient } from '@supabase/supabase-js';
-import { checkRateLimit, applyRateLimitHeaders } from './_lib/rateLimit';
 
 export default async function handler(req, res) {
   // Solo permitir GET
@@ -19,21 +18,6 @@ export default async function handler(req, res) {
     process.env.SUPABASE_URL,
     process.env.SUPABASE_SERVICE_KEY
   );
-
-  const RATE_LIMIT = 60;
-  const WINDOW_MS = 60 * 1000;
-  const rateLimitResult = checkRateLimit({
-    req,
-    keyPrefix: 'get-stats',
-    limit: RATE_LIMIT,
-    windowMs: WINDOW_MS
-  });
-
-  applyRateLimitHeaders(res, rateLimitResult, RATE_LIMIT);
-
-  if (!rateLimitResult.allowed) {
-    return res.status(429).json({ error: 'Too many requests. Try again soon.' });
-  }
 
   try {
     // Obtener estadísticas de invitación

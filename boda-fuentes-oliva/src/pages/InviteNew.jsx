@@ -11,7 +11,9 @@ const InviteNew = () => {
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
   const authStorageKey = 'inviteNewAuth';
   const inactivityMs = 3 * 60 * 1000;
-  const isWeddingDay = true;
+  const now = new Date();
+  const isWeddingDay =
+    now.getFullYear() === 2026 && now.getMonth() === 4 && now.getDate() === 3;
 
   const scheduleEvents = [
     {

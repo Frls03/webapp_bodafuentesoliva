@@ -353,10 +353,13 @@ const InviteNew = () => {
             Gracias por acompañarnos en este dia tan especial. Si deseas hacernos un obsequio, esta es nuestra mesa de regalos.
           </p>
           <p className="gifts-note">
-            Ayudanos dejando tu regalo en el establecimiento, nosotros pasaremos por ellos.
+            Cemaco nos entregará los obsequios, por favor no los retires de la tienda.
           </p>
         </div>
       </section>
+
+
+
 
       {/* MÓDULO 6: Dress Code */}
       <section className="dresscode-section module-animate" style={{ animationDelay: '0.3s' }}>

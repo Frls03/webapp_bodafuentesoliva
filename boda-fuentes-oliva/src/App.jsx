@@ -3,13 +3,14 @@ import Navigation from './components/Navigation';
 // import Invite from './pages/Invite'; // Plantilla anterior (comentada)
 import InviteNew from './pages/InviteNew'; // Nueva página de invitación
 import InviteBel from './pages/InviteBel';
+import InviteGla from './pages/InviteGla';
 import MomentsShared from './pages/MomentsShared';
 import AdminPanel from './pages/AdminPanel';
 import './App.css';
 
 function App() {
   const location = useLocation();
-  const isInvitePage = ['/invite', '/invite-bel', '/home', '/savethedate', '/'].includes(location.pathname);
+  const isInvitePage = ['/invite', '/invite-bel', '/invite-gla', '/home', '/savethedate', '/'].includes(location.pathname);
   const isAdminPage = location.pathname === '/admin';
   
   // Puedes cambiar esto a false para ocultar el enlace de invitación
@@ -28,6 +29,7 @@ function App() {
           {/* <Route path="/invite" element={<Invite />} /> */} {/* Plantilla anterior */}
           <Route path="/invite" element={<InviteNew />} /> {/* Nueva invitación */}
           <Route path="/invite-bel" element={<InviteBel />} />
+          <Route path="/invite-gla" element={<InviteGla />} />
           <Route path="/moments" element={<MomentsShared />} />
           <Route path="/admin" element={<AdminPanel />} />
         </Routes>

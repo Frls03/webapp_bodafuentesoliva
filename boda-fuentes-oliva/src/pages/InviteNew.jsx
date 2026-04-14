@@ -3,14 +3,18 @@ import { useNavigate } from 'react-router-dom';
 import '../styles/InviteNew.css';
 import PasswordGate from '../components/PasswordGate';
 import AttendanceConfirmation from '../components/AttendanceConfirmation';
+import { getGuestByPassword } from '../lib/supabase';
 
-const InviteNew = () => {
+const InviteNew = ({ directAccessPassword = '' }) => {
   const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [guestData, setGuestData] = useState(null);
+  const [isDirectAccessLoading, setIsDirectAccessLoading] = useState(false);
+  const [directAccessError, setDirectAccessError] = useState('');
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
   const authStorageKey = 'inviteNewAuth';
   const inactivityMs = 3 * 60 * 1000;
+  const hasDirectAccessPassword = Boolean(String(directAccessPassword).trim());
   const now = new Date();
   const isWeddingDay =
     now.getFullYear() === 2026 && now.getMonth() === 4 && now.getDate() === 3;
@@ -115,6 +119,54 @@ const InviteNew = () => {
   }, []);
 
   useEffect(() => {
+    if (!hasDirectAccessPassword) {
+      return;
+    }
+
+    let isMounted = true;
+
+    const loadGuestByDirectAccess = async () => {
+      setIsDirectAccessLoading(true);
+      setDirectAccessError('');
+
+      try {
+        const normalizedPassword = String(directAccessPassword).trim().toLowerCase();
+        const guest = await getGuestByPassword(normalizedPassword);
+
+        if (!isMounted) {
+          return;
+        }
+
+        if (!guest) {
+          setDirectAccessError('No se pudo cargar la invitación para este acceso especial.');
+          return;
+        }
+
+        setGuestData(guest);
+        setIsAuthenticated(true);
+      } catch {
+        if (isMounted) {
+          setDirectAccessError('No se pudo cargar la invitación para este acceso especial.');
+        }
+      } finally {
+        if (isMounted) {
+          setIsDirectAccessLoading(false);
+        }
+      }
+    };
+
+    loadGuestByDirectAccess();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [directAccessPassword, hasDirectAccessPassword]);
+
+  useEffect(() => {
+    if (hasDirectAccessPassword) {
+      return;
+    }
+
     const stored = localStorage.getItem(authStorageKey);
 
     if (!stored) return;
@@ -136,6 +188,10 @@ const InviteNew = () => {
   }, []);
 
   useEffect(() => {
+    if (hasDirectAccessPassword) {
+      return;
+    }
+
     if (!isAuthenticated || !guestData) return;
 
     const updateLastActive = () => {
@@ -205,6 +261,12 @@ const InviteNew = () => {
   }, []);
 
   const handleAuthenticated = (data) => {
+    if (hasDirectAccessPassword) {
+      setGuestData(data);
+      setIsAuthenticated(true);
+      return;
+    }
+
     setGuestData(data);
     setIsAuthenticated(true);
     localStorage.setItem(
@@ -214,6 +276,10 @@ const InviteNew = () => {
   };
 
   const handleChangeGuest = () => {
+    if (hasDirectAccessPassword) {
+      return;
+    }
+
     setIsAuthenticated(false);
     setGuestData(null);
     localStorage.removeItem(authStorageKey);
@@ -232,6 +298,14 @@ const InviteNew = () => {
   const heroMessage =
     String(guestData?.mesage || guestData?.message || '').trim() ||
     'Nuestro amor tiene una fecha especial y queremos celebrar contigo';
+
+  if (hasDirectAccessPassword && isDirectAccessLoading) {
+    return <div className="password-gate">Cargando invitación...</div>;
+  }
+
+  if (hasDirectAccessPassword && directAccessError) {
+    return <div className="password-gate">{directAccessError}</div>;
+  }
 
   if (!isAuthenticated) {
     return <PasswordGate onAuthenticated={handleAuthenticated} />;
@@ -253,9 +327,11 @@ const InviteNew = () => {
           </p>
           <p className="hero-date">03 . 05 . 2026</p>
         </div>
-        <button className="change-guest-btn" onClick={handleChangeGuest}>
-          ¿No eres tú?
-        </button>
+        {!hasDirectAccessPassword ? (
+          <button className="change-guest-btn" onClick={handleChangeGuest}>
+            ¿No eres tú?
+          </button>
+        ) : null}
       </section>
 
       {/* MÓDULO 2: Countdown */}

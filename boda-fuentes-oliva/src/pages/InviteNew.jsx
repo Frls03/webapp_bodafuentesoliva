@@ -15,6 +15,8 @@ const InviteNew = ({ directAccessPassword = '' }) => {
   const authStorageKey = 'inviteNewAuth';
   const inactivityMs = 3 * 60 * 1000;
   const hasDirectAccessPassword = Boolean(String(directAccessPassword).trim());
+  const directAccessErrorTitle = 'No pudimos cargar tu invitación por el momento';
+  const directAccessErrorText = 'Estamos presentando una falla temporal en el servicio. Tu invitación está segura; por favor intenta de nuevo más tarde. Gracias por tu comprensión.';
   const now = new Date();
   const isWeddingDay =
     now.getFullYear() === 2026 && now.getMonth() === 4 && now.getDate() === 3;
@@ -138,7 +140,7 @@ const InviteNew = ({ directAccessPassword = '' }) => {
         }
 
         if (!guest) {
-          setDirectAccessError('No se pudo cargar la invitación para este acceso especial.');
+          setDirectAccessError('SERVICE_UNAVAILABLE');
           return;
         }
 
@@ -146,7 +148,7 @@ const InviteNew = ({ directAccessPassword = '' }) => {
         setIsAuthenticated(true);
       } catch {
         if (isMounted) {
-          setDirectAccessError('No se pudo cargar la invitación para este acceso especial.');
+          setDirectAccessError('SERVICE_UNAVAILABLE');
         }
       } finally {
         if (isMounted) {
@@ -304,7 +306,20 @@ const InviteNew = ({ directAccessPassword = '' }) => {
   }
 
   if (hasDirectAccessPassword && directAccessError) {
-    return <div className="password-gate">{directAccessError}</div>;
+    return (
+      <div className="password-gate">
+        <div className="password-gate-content">
+          <div className="error-message" style={{ marginTop: 0 }}>
+            <span className="error-icon">⚠️</span>
+            <span>
+              <strong>{directAccessErrorTitle}</strong>
+              <br />
+              {directAccessErrorText}
+            </span>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   if (!isAuthenticated) {

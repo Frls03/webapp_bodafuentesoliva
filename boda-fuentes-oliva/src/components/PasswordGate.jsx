@@ -4,14 +4,16 @@ import { getGuestByPassword } from '../lib/supabase';
 
 const PasswordGate = ({ onAuthenticated }) => {
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [showServiceError, setShowServiceError] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const authStorageKey = 'inviteNewAuth';
+  const serviceErrorTitle = 'Estamos presentando una falla temporal';
+  const serviceErrorText = 'En este momento no pudimos validar tu acceso. Por favor intenta nuevamente más tarde. Gracias por tu paciencia.';
 
   const handlePasswordSubmit = async (e) => {
     e.preventDefault();
-    setError('');
+    setShowServiceError(false);
     setLoading(true);
 
     try {
@@ -27,11 +29,11 @@ const PasswordGate = ({ onAuthenticated }) => {
         onAuthenticated(guest);
         setPassword('');
       } else {
-        setError('Contraseña incorrecta. Por favor, verifica tu invitación.');
+        setShowServiceError(true);
         setPassword('');
       }
     } catch (err) {
-      setError('Error al validar contraseña. Intenta de nuevo.');
+      setShowServiceError(true);
       console.error(err);
     } finally {
       setLoading(false);
@@ -59,7 +61,7 @@ const PasswordGate = ({ onAuthenticated }) => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Ingresa tu contraseña"
-              className={`password-input ${error ? 'error' : ''}`}
+              className={`password-input ${showServiceError ? 'error' : ''}`}
               autoComplete="off"
               autoFocus
               required
@@ -74,10 +76,14 @@ const PasswordGate = ({ onAuthenticated }) => {
             </button>
           </div>
 
-          {error && (
+          {showServiceError && (
             <div className="error-message">
               <span className="error-icon">⚠️</span>
-              <span>{error}</span>
+              <span>
+                <strong>{serviceErrorTitle}</strong>
+                <br />
+                {serviceErrorText}
+              </span>
             </div>
           )}
 

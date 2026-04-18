@@ -375,8 +375,32 @@ const InviteNew = ({ directAccessPassword = '' }) => {
         </div>
       </section>
 
-      {/* MÓDULO 3: Cronograma */}
-      <section className="schedule-section module-animate" style={{ animationDelay: '0.15s' }}>
+      {/* MÓDULO 3: Regalos */}
+      <section className="gifts-section module-animate" style={{ animationDelay: '0.15s' }}>
+        <div className="gifts-background" style={{ backgroundImage: 'url(/images/mosaico3.jpg)' }}></div>
+        <div className="gifts-content">
+            <img className="gifts-icon" src="/icons/regalos.png" alt="" aria-hidden="true" loading="lazy" decoding="async" />
+          <div className="gifts-options">
+            <a
+              className="gifts-link-button"
+              href="https://www.cemaco.com/list/bodafuentesoliva"
+              target="_blank"
+              rel="noreferrer"
+            >
+              LISTA DE REGALOS
+            </a>
+          </div>
+          <p className="gifts-message">
+            Gracias por acompañarnos en este dia tan especial. Si deseas hacernos un obsequio, esta es nuestra mesa de regalos.
+          </p>
+          <p className="gifts-note">
+            Cemaco nos entregará los obsequios, por favor no los retires de la tienda.
+          </p>
+        </div>
+      </section>
+
+      {/* MÓDULO 4: Cronograma */}
+      <section className="schedule-section module-animate" style={{ animationDelay: '0.2s' }}>
         <div className="schedule-background" style={{ backgroundImage: 'url(/images/invi1.jpeg)' }}></div>
         <div className="schedule-content">
           <h2 className="schedule-title">Cronograma</h2>
@@ -411,8 +435,8 @@ const InviteNew = ({ directAccessPassword = '' }) => {
         </div>
       </section>
 
-      {/* MÓDULO 4: Poster con 3 fotos */}
-      <section className="photos-section module-animate" style={{ animationDelay: '0.2s' }}>
+      {/* MÓDULO 5: Poster con 3 fotos */}
+      <section className="photos-section module-animate" style={{ animationDelay: '0.25s' }}>
         <div className="photos-grid">
           <div className="photo-frame">
             <img src="/images/mosaico1.jpg" alt="Pareja 1" loading="lazy" decoding="async" />
@@ -425,33 +449,6 @@ const InviteNew = ({ directAccessPassword = '' }) => {
           </div>
         </div>
       </section>
-
-
-            {/* MÓDULO 5: Regalos */}
-      <section className="gifts-section module-animate" style={{ animationDelay: '0.25s' }}>
-        <div className="gifts-background" style={{ backgroundImage: 'url(/images/mosaico3.jpg)' }}></div>
-        <div className="gifts-content">
-            <img className="gifts-icon" src="/icons/regalos.png" alt="" aria-hidden="true" loading="lazy" decoding="async" />
-          <div className="gifts-options">
-            <a
-              className="gifts-link-button"
-              href="https://www.cemaco.com/list/bodafuentesoliva"
-              target="_blank"
-              rel="noreferrer"
-            >
-              LISTA DE REGALOS
-            </a>
-          </div>
-          <p className="gifts-message">
-            Gracias por acompañarnos en este dia tan especial. Si deseas hacernos un obsequio, esta es nuestra mesa de regalos.
-          </p>
-          <p className="gifts-note">
-            Cemaco nos entregará los obsequios, por favor no los retires de la tienda.
-          </p>
-        </div>
-      </section>
-
-
 
 
       {/* MÓDULO 6: Dress Code */}

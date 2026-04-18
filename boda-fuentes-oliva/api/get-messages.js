@@ -1,6 +1,6 @@
 // Vercel Serverless Function - Get Messages
-// Obtiene todos los mensajes de invitados
-import { createClient } from '@supabase/supabase-js';
+// Gets all guest messages.
+import { query } from './_lib/neon.js';
 
 export default async function handler(req, res) {
   // Solo permitir GET
@@ -13,31 +13,33 @@ export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Methods', 'GET');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-  // Service key para bypasear RLS
-  const supabase = createClient(
-    process.env.SUPABASE_URL,
-    process.env.SUPABASE_SERVICE_KEY
-  );
-
   try {
-    const { data, error } = await supabase
-      .from('guest_messages')
-      .select(`
-        *,
-        guests (
-          names,
-          password
-        )
-      `)
-      .order('created_at', { ascending: false });
+    const result = await query(
+      `
+        SELECT gm.*, g.names AS guest_names, g.password AS guest_password
+        FROM public.guest_messages gm
+        LEFT JOIN public.guests g ON g.id = gm.guest_id
+        ORDER BY gm.created_at DESC
+      `
+    );
 
-    if (error) {
-      throw error;
-    }
+    const messages = result.rows.map(row => ({
+      id: row.id,
+      guest_id: row.guest_id,
+      sender_name: row.sender_name,
+      message: row.message,
+      created_at: row.created_at,
+      guests: row.guest_names || row.guest_password
+        ? {
+            names: row.guest_names,
+            password: row.guest_password
+          }
+        : null
+    }));
 
     return res.status(200).json({
       success: true,
-      messages: data
+      messages
     });
 
   } catch (err) {

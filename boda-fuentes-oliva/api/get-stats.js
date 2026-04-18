@@ -1,6 +1,6 @@
 // Vercel Serverless Function - Get Stats
-// Obtiene estadísticas de asistencia y Save The Date
-import { createClient } from '@supabase/supabase-js';
+// Gets attendance and Save The Date stats.
+import { query } from './_lib/neon.js';
 
 export default async function handler(req, res) {
   // Solo permitir GET
@@ -13,37 +13,32 @@ export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Methods', 'GET');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-  // Service key para bypasear RLS
-  const supabase = createClient(
-    process.env.SUPABASE_URL,
-    process.env.SUPABASE_SERVICE_KEY
-  );
-
   try {
-    // Obtener estadísticas de invitación
-    const { data: guests, error: guestsError } = await supabase
-      .from('guests')
-      .select('id, names, attendance_confirmed, attendance_count, attendance_notes, confirmed_at, password')
-      .order('confirmed_at', { ascending: false, nullsFirst: false });
+    const guestsResult = await query(
+      `
+        SELECT id, names, attendance_confirmed, attendance_count,
+               attendance_notes, confirmed_at, password
+        FROM public.guests
+        ORDER BY confirmed_at DESC NULLS LAST
+      `
+    );
 
-    if (guestsError) {
-      throw guestsError;
-    }
+    const guests = guestsResult.rows;
 
     const confirmed = guests.filter(g => g.attendance_confirmed === true).length;
     const declined = guests.filter(g => g.attendance_confirmed === false).length;
     const pending = guests.filter(g => g.attendance_confirmed === null).length;
     const totalAttendees = guests.reduce((sum, g) => sum + (g.attendance_count || 0), 0);
 
-    // Obtener estadísticas de Save The Date
-    const { data: saveTheDate, error: stdError } = await supabase
-      .from('save_the_date_rsvp')
-      .select('*')
-      .order('created_at', { ascending: false });
+    const saveTheDateResult = await query(
+      `
+        SELECT *
+        FROM public.save_the_date_rsvp
+        ORDER BY created_at DESC
+      `
+    );
 
-    if (stdError) {
-      throw stdError;
-    }
+    const saveTheDate = saveTheDateResult.rows;
 
     const stdConfirmed = saveTheDate.filter(r => r.will_attend === true).length;
     const stdDeclined = saveTheDate.filter(r => r.will_attend === false).length;

@@ -39,6 +39,7 @@ PASO3_REACTIVAR_RLS_DEPLOY.sql
 VERIFICAR_RLS_REAL.sql
 DESACTIVAR_RLS.sql
 REACTIVAR_RLS.sql
+neon_migration.sql
 *_TEMP.sql
 *_DEV.sql
 *_DEBUG.sql

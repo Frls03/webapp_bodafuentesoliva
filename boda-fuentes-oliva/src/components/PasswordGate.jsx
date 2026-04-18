@@ -17,7 +17,7 @@ const PasswordGate = ({ onAuthenticated }) => {
     setLoading(true);
 
     try {
-      const normalizedPassword = password.trim().toLowerCase();
+      const normalizedPassword = password.trim();
       const guest = await getGuestByPassword(normalizedPassword);
 
       if (guest) {

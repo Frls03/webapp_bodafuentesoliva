@@ -56,7 +56,7 @@ const SaveTheDate = () => {
         
         {/* Imagen sin recortes */}
         <div className="std-image-container-1">
-          <img src="/images/foto inicial.jpg" alt="Pareja" />
+          <img src="/images/foto inicial.jpg" alt="Pareja" loading="eager" fetchPriority="high" decoding="async" />
         </div>
       </section>
 
@@ -94,7 +94,7 @@ const SaveTheDate = () => {
 
       {/* Imagen extra bajo el bloque verde */}
       <div className="std-image-custom">
-        <img src="/images/foto extra.jpg" alt="Foto extra" />
+        <img src="/images/foto extra.jpg" alt="Foto extra" loading="lazy" decoding="async" />
       </div>
 
       {/* SECCIÓN 3: Countdown y formulario */}

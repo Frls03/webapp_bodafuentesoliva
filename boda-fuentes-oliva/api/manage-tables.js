@@ -1,6 +1,6 @@
 // Vercel Serverless Function - Manage Tables
-// CRUD completo para mesas y asignaciones
-import { createClient } from '@supabase/supabase-js';
+// Full CRUD for tables and assignments.
+import { query } from './_lib/neon.js';
 
 export default async function handler(req, res) {
   // CORS headers
@@ -12,12 +12,6 @@ export default async function handler(req, res) {
     return res.status(200).end();
   }
 
-  // Service key para bypasear RLS
-  const supabase = createClient(
-    process.env.SUPABASE_URL,
-    process.env.SUPABASE_SERVICE_KEY
-  );
-
   try {
     // ========================================
     // GET - Obtener mesas y asignaciones
@@ -26,23 +20,27 @@ export default async function handler(req, res) {
       const { type } = req.query;
 
       if (type === 'tables') {
-        const { data, error } = await supabase
-          .from('tables')
-          .select('*')
-          .order('id', { ascending: true });
+        const result = await query(
+          `
+            SELECT *
+            FROM public.tables
+            ORDER BY id ASC
+          `
+        );
 
-        if (error) throw error;
-        return res.status(200).json({ success: true, data });
+        return res.status(200).json({ success: true, data: result.rows });
       }
 
       if (type === 'assignments') {
-        const { data, error } = await supabase
-          .from('table_assignments')
-          .select('*')
-          .order('table_id', { ascending: true });
+        const result = await query(
+          `
+            SELECT *
+            FROM public.table_assignments
+            ORDER BY table_id ASC, id ASC
+          `
+        );
 
-        if (error) throw error;
-        return res.status(200).json({ success: true, data });
+        return res.status(200).json({ success: true, data: result.rows });
       }
 
       return res.status(400).json({ error: 'Invalid type parameter' });
@@ -56,26 +54,62 @@ export default async function handler(req, res) {
 
       if (type === 'table') {
         const { name, capacity } = data;
-        const { data: result, error } = await supabase
-          .from('tables')
-          .insert([{ name, capacity: capacity || 10 }])
-          .select()
-          .single();
+        const safeName = typeof name === 'string' ? name.trim() : '';
+        const safeCapacity = Number.isInteger(Number(capacity)) ? Number(capacity) : 10;
 
-        if (error) throw error;
-        return res.status(200).json({ success: true, data: result });
+        if (!safeName || safeName.length > 80) {
+          return res.status(400).json({ error: 'Invalid table name' });
+        }
+
+        if (safeCapacity < 1 || safeCapacity > 50) {
+          return res.status(400).json({ error: 'Invalid table capacity' });
+        }
+
+        const result = await query(
+          `
+            INSERT INTO public.tables (name, capacity)
+            VALUES ($1, $2)
+            RETURNING *
+          `,
+          [safeName, safeCapacity]
+        );
+
+        return res.status(200).json({ success: true, data: result.rows[0] });
       }
 
       if (type === 'assignment') {
         const { table_id, guest_name, source_type, guest_id } = data;
-        const { data: result, error } = await supabase
-          .from('table_assignments')
-          .insert([{ table_id, guest_name, source_type, guest_id }])
-          .select()
-          .single();
+        const safeTableId = Number(table_id);
+        const safeGuestName = typeof guest_name === 'string' ? guest_name.trim() : '';
+        const safeSourceType = typeof source_type === 'string' ? source_type.trim() : '';
+        const safeGuestId = guest_id == null ? null : Number(guest_id);
 
-        if (error) throw error;
-        return res.status(200).json({ success: true, data: result });
+        if (!Number.isInteger(safeTableId) || safeTableId <= 0) {
+          return res.status(400).json({ error: 'Invalid table id' });
+        }
+
+        if (!safeGuestName || safeGuestName.length > 200) {
+          return res.status(400).json({ error: 'Invalid guest name' });
+        }
+
+        if (!['savethedate', 'invitation'].includes(safeSourceType)) {
+          return res.status(400).json({ error: 'Invalid source type' });
+        }
+
+        if (safeGuestId !== null && (!Number.isInteger(safeGuestId) || safeGuestId <= 0)) {
+          return res.status(400).json({ error: 'Invalid guest id' });
+        }
+
+        const result = await query(
+          `
+            INSERT INTO public.table_assignments (table_id, guest_name, source_type, guest_id)
+            VALUES ($1, $2, $3, $4)
+            RETURNING *
+          `,
+          [safeTableId, safeGuestName, safeSourceType, safeGuestId]
+        );
+
+        return res.status(200).json({ success: true, data: result.rows[0] });
       }
 
       return res.status(400).json({ error: 'Invalid type parameter' });
@@ -86,24 +120,19 @@ export default async function handler(req, res) {
     // ========================================
     if (req.method === 'DELETE') {
       const { type, id } = req.body;
+      const safeId = Number(id);
+
+      if (!Number.isInteger(safeId) || safeId <= 0) {
+        return res.status(400).json({ error: 'Invalid id' });
+      }
 
       if (type === 'table') {
-        const { error } = await supabase
-          .from('tables')
-          .delete()
-          .eq('id', id);
-
-        if (error) throw error;
+        await query('DELETE FROM public.tables WHERE id = $1', [safeId]);
         return res.status(200).json({ success: true });
       }
 
       if (type === 'assignment') {
-        const { error } = await supabase
-          .from('table_assignments')
-          .delete()
-          .eq('id', id);
-
-        if (error) throw error;
+        await query('DELETE FROM public.table_assignments WHERE id = $1', [safeId]);
         return res.status(200).json({ success: true });
       }
 

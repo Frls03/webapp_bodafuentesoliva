@@ -132,7 +132,7 @@ const InviteNew = ({ directAccessPassword = '' }) => {
       setDirectAccessError('');
 
       try {
-        const normalizedPassword = String(directAccessPassword).trim().toLowerCase();
+        const normalizedPassword = String(directAccessPassword).trim();
         const guest = await getGuestByPassword(normalizedPassword);
 
         if (!isMounted) {
@@ -388,6 +388,8 @@ const InviteNew = ({ directAccessPassword = '' }) => {
                   <img
                     src={event.icon}
                     alt={event.title}
+                    loading="lazy"
+                    decoding="async"
                     className={`schedule-icon-img${event.icon.includes('camara1') ? ' icon-camera' : ''}`}
                   />
                 </div>
@@ -413,13 +415,13 @@ const InviteNew = ({ directAccessPassword = '' }) => {
       <section className="photos-section module-animate" style={{ animationDelay: '0.2s' }}>
         <div className="photos-grid">
           <div className="photo-frame">
-            <img src="/images/mosaico1.jpg" alt="Pareja 1" />
+            <img src="/images/mosaico1.jpg" alt="Pareja 1" loading="lazy" decoding="async" />
           </div>
           <div className="photo-frame">
-            <img src="/images/mosaico2.jpg" alt="Pareja 2" />
+            <img src="/images/mosaico2.jpg" alt="Pareja 2" loading="lazy" decoding="async" />
           </div>
           <div className="photo-frame">
-            <img src="/images/invi2.jpeg" alt="Pareja 3" />
+            <img src="/images/invi2.jpeg" alt="Pareja 3" loading="lazy" decoding="async" />
           </div>
         </div>
       </section>
@@ -429,7 +431,7 @@ const InviteNew = ({ directAccessPassword = '' }) => {
       <section className="gifts-section module-animate" style={{ animationDelay: '0.25s' }}>
         <div className="gifts-background" style={{ backgroundImage: 'url(/images/mosaico3.jpg)' }}></div>
         <div className="gifts-content">
-            <img className="gifts-icon" src="/icons/regalos.png" alt="" aria-hidden="true" />
+            <img className="gifts-icon" src="/icons/regalos.png" alt="" aria-hidden="true" loading="lazy" decoding="async" />
           <div className="gifts-options">
             <a
               className="gifts-link-button"

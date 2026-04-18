@@ -2,25 +2,21 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
+const injectedPort = Number(process.env.PORT || 0)
+const isVercelDev = Number.isFinite(injectedPort) && injectedPort > 0
+
 export default defineConfig({
   plugins: [react()],
   server: {
     host: true,          // escucha en 0.0.0.0 (necesario para túneles)
-    port: 5173,
-    strictPort: true,
+    port: isVercelDev ? injectedPort : 5173,
+    strictPort: isVercelDev,
     // Opción A: permitir solo tu dominio ngrok actual
     // allowedHosts: ['fortuitous-juliette-unrhetorical.ngrok-free.dev'],
 
     // Opción B: permitir cualquier host (más cómodo si el subdominio cambia)
     allowedHosts: true,
 
-    // HMR sobre HTTPS del túnel (evita fallos de websocket)
-    hmr: {
-      protocol: 'wss',
-      host: 'fortuitous-juliette-unrhetorical.ngrok-free.dev', // o deja vacío si usas allowedHosts:true
-      clientPort: 443
-    },
-    
     // Proxy para las API calls al backend de Vercel
     proxy: {
       '/api': {

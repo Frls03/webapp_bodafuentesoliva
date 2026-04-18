@@ -1,6 +1,6 @@
 // Vercel Serverless Function - Admin Login
-// Este código se ejecuta en el servidor, NO en el navegador
-import { createClient } from '@supabase/supabase-js';
+// This code runs on the server.
+import { query } from './_lib/neon.js';
 
 export default async function handler(req, res) {
   // Solo permitir POST
@@ -17,35 +17,37 @@ export default async function handler(req, res) {
     return res.status(200).end();
   }
 
-  const supabase = createClient(
-    process.env.SUPABASE_URL,
-    process.env.SUPABASE_SERVICE_KEY
-  );
-
-  const { username, password } = req.body;
+  const { username, password } = req.body || {};
+  const safeUsername = typeof username === 'string' ? username.trim() : '';
+  const safePassword = typeof password === 'string' ? password.trim() : '';
 
   // Validación básica
-  if (!username || !password) {
+  if (!safeUsername || !safePassword) {
     return res.status(400).json({ error: 'Username and password required' });
   }
 
   // Validación de longitud (prevenir DoS)
-  if (username.length > 50 || password.length > 50) {
+  if (safeUsername.length > 50 || safePassword.length > 100) {
     return res.status(400).json({ error: 'Invalid credentials' });
   }
 
   try {
-    const { data, error } = await supabase
-      .from('admins')
-      .select('id, username')
-      .eq('username', username)
-      .eq('password', password)
-      .single();
+    const result = await query(
+      `
+        SELECT id, username
+        FROM public.admins
+        WHERE username = $1 AND password = $2
+        LIMIT 1
+      `,
+      [safeUsername, safePassword]
+    );
 
-    if (error || !data) {
+    if (result.rowCount === 0) {
       await new Promise(resolve => setTimeout(resolve, 1000));
       return res.status(401).json({ success: false, error: 'Invalid credentials' });
     }
+
+    const data = result.rows[0];
 
     return res.status(200).json({
       success: true,
